@@ -1,0 +1,1159 @@
+{
+  "agent": "readiness_agent",
+  "repo": "C:\\Users\\Lenovo\\Downloads\\knowledge-handoff\\sample-repos\\steam-snap",
+  "high_risk_files_analyzed": 8,
+  "files": [
+    {
+      "file": "docs/.sphinx/_static/js/overwrite_links.js",
+      "risk_level": "HIGH",
+      "why": "1 contributor, last touched 38 days ago, zero comments (doc score 0.0/100).",
+      "owners": [
+        "shanecrowley"
+      ],
+      "best_backup": "andreia (touched 21 related files, score 43)",
+      "backup_ranking": [
+        {
+          "name": "andreia",
+          "score": 43,
+          "related_files_touched": 21,
+          "related_files": [
+            "docs/.custom_wordlist.txt",
+            "docs/.readthedocs.yaml",
+            "docs/conf.py",
+            "docs/contributing/development.md",
+            "docs/explanation/index.md",
+            "docs/explanation/snap-versus-deb.md",
+            "docs/explanation/what-games-can-i-play.md",
+            "docs/howto/change-mesa-graphics.md",
+            "docs/howto/configure-mangohud.md",
+            "docs/howto/configure-proton.md",
+            "docs/howto/dedicated-gpu.md",
+            "docs/howto/index.md",
+            "docs/howto/install.md",
+            "docs/howto/set-up-controller.md",
+            "docs/howto/troubleshooting/game-workarounds.md",
+            "docs/howto/troubleshooting/index.md",
+            "docs/howto/update-version.md",
+            "docs/index.md",
+            "docs/reference/external-libraries.md",
+            "docs/reference/glossary.md",
+            "docs/reference/index.md"
+          ]
+        },
+        {
+          "name": "ashuntu",
+          "score": 16,
+          "related_files_touched": 2,
+          "related_files": [
+            "docs/howto/configure-mangohud.md",
+            "docs/reference/index.md"
+          ]
+        },
+        {
+          "name": "Ken VanDine",
+          "score": 13,
+          "related_files_touched": 0,
+          "related_files": []
+        },
+        {
+          "name": "Andreia",
+          "score": 6,
+          "related_files_touched": 3,
+          "related_files": [
+            "docs/.readthedocs.yaml",
+            "docs/conf.py",
+            "docs/howto/change-mesa-graphics.md"
+          ]
+        },
+        {
+          "name": "Ash",
+          "score": 6,
+          "related_files_touched": 0,
+          "related_files": []
+        },
+        {
+          "name": "James Henstridge",
+          "score": 4,
+          "related_files_touched": 0,
+          "related_files": []
+        },
+        {
+          "name": "Sergio Costas Rodriguez",
+          "score": 3,
+          "related_files_touched": 0,
+          "related_files": []
+        },
+        {
+          "name": "Zoe Spellman",
+          "score": 3,
+          "related_files_touched": 0,
+          "related_files": []
+        },
+        {
+          "name": "Jesús Soto",
+          "score": 2,
+          "related_files_touched": 0,
+          "related_files": []
+        },
+        {
+          "name": "Kyuyrii",
+          "score": 2,
+          "related_files_touched": 0,
+          "related_files": []
+        },
+        {
+          "name": "fntenjr",
+          "score": 2,
+          "related_files_touched": 0,
+          "related_files": []
+        },
+        {
+          "name": "jssotomdz",
+          "score": 2,
+          "related_files_touched": 0,
+          "related_files": []
+        },
+        {
+          "name": "Alberto Contreras",
+          "score": 1,
+          "related_files_touched": 0,
+          "related_files": []
+        },
+        {
+          "name": "Denis Moskal",
+          "score": 1,
+          "related_files_touched": 0,
+          "related_files": []
+        },
+        {
+          "name": "Didier Roche",
+          "score": 1,
+          "related_files_touched": 0,
+          "related_files": []
+        },
+        {
+          "name": "Shane Crowley",
+          "score": 1,
+          "related_files_touched": 0,
+          "related_files": []
+        },
+        {
+          "name": "Umayr",
+          "score": 1,
+          "related_files_touched": 0,
+          "related_files": []
+        },
+        {
+          "name": "soredake",
+          "score": 1,
+          "related_files_touched": 0,
+          "related_files": []
+        }
+      ]
+    },
+    {
+      "file": "docs/.sphinx/_templates/footer.html",
+      "risk_level": "HIGH",
+      "why": "1 contributor, last touched 38 days ago, zero comments (doc score 0.0/100).",
+      "owners": [
+        "shanecrowley"
+      ],
+      "best_backup": "andreia (touched 21 related files, score 43)",
+      "backup_ranking": [
+        {
+          "name": "andreia",
+          "score": 43,
+          "related_files_touched": 21,
+          "related_files": [
+            "docs/.custom_wordlist.txt",
+            "docs/.readthedocs.yaml",
+            "docs/conf.py",
+            "docs/contributing/development.md",
+            "docs/explanation/index.md",
+            "docs/explanation/snap-versus-deb.md",
+            "docs/explanation/what-games-can-i-play.md",
+            "docs/howto/change-mesa-graphics.md",
+            "docs/howto/configure-mangohud.md",
+            "docs/howto/configure-proton.md",
+            "docs/howto/dedicated-gpu.md",
+            "docs/howto/index.md",
+            "docs/howto/install.md",
+            "docs/howto/set-up-controller.md",
+            "docs/howto/troubleshooting/game-workarounds.md",
+            "docs/howto/troubleshooting/index.md",
+            "docs/howto/update-version.md",
+            "docs/index.md",
+            "docs/reference/external-libraries.md",
+            "docs/reference/glossary.md",
+            "docs/reference/index.md"
+          ]
+        },
+        {
+          "name": "ashuntu",
+          "score": 16,
+          "related_files_touched": 2,
+          "related_files": [
+            "docs/howto/configure-mangohud.md",
+            "docs/reference/index.md"
+          ]
+        },
+        {
+          "name": "Ken VanDine",
+          "score": 13,
+          "related_files_touched": 0,
+          "related_files": []
+        },
+        {
+          "name": "Andreia",
+          "score": 6,
+          "related_files_touched": 3,
+          "related_files": [
+            "docs/.readthedocs.yaml",
+            "docs/conf.py",
+            "docs/howto/change-mesa-graphics.md"
+          ]
+        },
+        {
+          "name": "Ash",
+          "score": 6,
+          "related_files_touched": 0,
+          "related_files": []
+        },
+        {
+          "name": "James Henstridge",
+          "score": 4,
+          "related_files_touched": 0,
+          "related_files": []
+        },
+        {
+          "name": "Sergio Costas Rodriguez",
+          "score": 3,
+          "related_files_touched": 0,
+          "related_files": []
+        },
+        {
+          "name": "Zoe Spellman",
+          "score": 3,
+          "related_files_touched": 0,
+          "related_files": []
+        },
+        {
+          "name": "Jesús Soto",
+          "score": 2,
+          "related_files_touched": 0,
+          "related_files": []
+        },
+        {
+          "name": "Kyuyrii",
+          "score": 2,
+          "related_files_touched": 0,
+          "related_files": []
+        },
+        {
+          "name": "fntenjr",
+          "score": 2,
+          "related_files_touched": 0,
+          "related_files": []
+        },
+        {
+          "name": "jssotomdz",
+          "score": 2,
+          "related_files_touched": 0,
+          "related_files": []
+        },
+        {
+          "name": "Alberto Contreras",
+          "score": 1,
+          "related_files_touched": 0,
+          "related_files": []
+        },
+        {
+          "name": "Denis Moskal",
+          "score": 1,
+          "related_files_touched": 0,
+          "related_files": []
+        },
+        {
+          "name": "Didier Roche",
+          "score": 1,
+          "related_files_touched": 0,
+          "related_files": []
+        },
+        {
+          "name": "Shane Crowley",
+          "score": 1,
+          "related_files_touched": 0,
+          "related_files": []
+        },
+        {
+          "name": "Umayr",
+          "score": 1,
+          "related_files_touched": 0,
+          "related_files": []
+        },
+        {
+          "name": "soredake",
+          "score": 1,
+          "related_files_touched": 0,
+          "related_files": []
+        }
+      ]
+    },
+    {
+      "file": "docs/.sphinx/_templates/header.html",
+      "risk_level": "HIGH",
+      "why": "1 contributor, last touched 38 days ago, zero comments (doc score 0.0/100).",
+      "owners": [
+        "shanecrowley"
+      ],
+      "best_backup": "andreia (touched 21 related files, score 43)",
+      "backup_ranking": [
+        {
+          "name": "andreia",
+          "score": 43,
+          "related_files_touched": 21,
+          "related_files": [
+            "docs/.custom_wordlist.txt",
+            "docs/.readthedocs.yaml",
+            "docs/conf.py",
+            "docs/contributing/development.md",
+            "docs/explanation/index.md",
+            "docs/explanation/snap-versus-deb.md",
+            "docs/explanation/what-games-can-i-play.md",
+            "docs/howto/change-mesa-graphics.md",
+            "docs/howto/configure-mangohud.md",
+            "docs/howto/configure-proton.md",
+            "docs/howto/dedicated-gpu.md",
+            "docs/howto/index.md",
+            "docs/howto/install.md",
+            "docs/howto/set-up-controller.md",
+            "docs/howto/troubleshooting/game-workarounds.md",
+            "docs/howto/troubleshooting/index.md",
+            "docs/howto/update-version.md",
+            "docs/index.md",
+            "docs/reference/external-libraries.md",
+            "docs/reference/glossary.md",
+            "docs/reference/index.md"
+          ]
+        },
+        {
+          "name": "ashuntu",
+          "score": 16,
+          "related_files_touched": 2,
+          "related_files": [
+            "docs/howto/configure-mangohud.md",
+            "docs/reference/index.md"
+          ]
+        },
+        {
+          "name": "Ken VanDine",
+          "score": 13,
+          "related_files_touched": 0,
+          "related_files": []
+        },
+        {
+          "name": "Andreia",
+          "score": 6,
+          "related_files_touched": 3,
+          "related_files": [
+            "docs/.readthedocs.yaml",
+            "docs/conf.py",
+            "docs/howto/change-mesa-graphics.md"
+          ]
+        },
+        {
+          "name": "Ash",
+          "score": 6,
+          "related_files_touched": 0,
+          "related_files": []
+        },
+        {
+          "name": "James Henstridge",
+          "score": 4,
+          "related_files_touched": 0,
+          "related_files": []
+        },
+        {
+          "name": "Sergio Costas Rodriguez",
+          "score": 3,
+          "related_files_touched": 0,
+          "related_files": []
+        },
+        {
+          "name": "Zoe Spellman",
+          "score": 3,
+          "related_files_touched": 0,
+          "related_files": []
+        },
+        {
+          "name": "Jesús Soto",
+          "score": 2,
+          "related_files_touched": 0,
+          "related_files": []
+        },
+        {
+          "name": "Kyuyrii",
+          "score": 2,
+          "related_files_touched": 0,
+          "related_files": []
+        },
+        {
+          "name": "fntenjr",
+          "score": 2,
+          "related_files_touched": 0,
+          "related_files": []
+        },
+        {
+          "name": "jssotomdz",
+          "score": 2,
+          "related_files_touched": 0,
+          "related_files": []
+        },
+        {
+          "name": "Alberto Contreras",
+          "score": 1,
+          "related_files_touched": 0,
+          "related_files": []
+        },
+        {
+          "name": "Denis Moskal",
+          "score": 1,
+          "related_files_touched": 0,
+          "related_files": []
+        },
+        {
+          "name": "Didier Roche",
+          "score": 1,
+          "related_files_touched": 0,
+          "related_files": []
+        },
+        {
+          "name": "Shane Crowley",
+          "score": 1,
+          "related_files_touched": 0,
+          "related_files": []
+        },
+        {
+          "name": "Umayr",
+          "score": 1,
+          "related_files_touched": 0,
+          "related_files": []
+        },
+        {
+          "name": "soredake",
+          "score": 1,
+          "related_files_touched": 0,
+          "related_files": []
+        }
+      ]
+    },
+    {
+      "file": "docs/.sphinx/_templates/page.html",
+      "risk_level": "HIGH",
+      "why": "1 contributor, last touched 93 days ago, zero comments (doc score 0.0/100).",
+      "owners": [
+        "shanecrowley"
+      ],
+      "best_backup": "andreia (touched 21 related files, score 43)",
+      "backup_ranking": [
+        {
+          "name": "andreia",
+          "score": 43,
+          "related_files_touched": 21,
+          "related_files": [
+            "docs/.custom_wordlist.txt",
+            "docs/.readthedocs.yaml",
+            "docs/conf.py",
+            "docs/contributing/development.md",
+            "docs/explanation/index.md",
+            "docs/explanation/snap-versus-deb.md",
+            "docs/explanation/what-games-can-i-play.md",
+            "docs/howto/change-mesa-graphics.md",
+            "docs/howto/configure-mangohud.md",
+            "docs/howto/configure-proton.md",
+            "docs/howto/dedicated-gpu.md",
+            "docs/howto/index.md",
+            "docs/howto/install.md",
+            "docs/howto/set-up-controller.md",
+            "docs/howto/troubleshooting/game-workarounds.md",
+            "docs/howto/troubleshooting/index.md",
+            "docs/howto/update-version.md",
+            "docs/index.md",
+            "docs/reference/external-libraries.md",
+            "docs/reference/glossary.md",
+            "docs/reference/index.md"
+          ]
+        },
+        {
+          "name": "ashuntu",
+          "score": 16,
+          "related_files_touched": 2,
+          "related_files": [
+            "docs/howto/configure-mangohud.md",
+            "docs/reference/index.md"
+          ]
+        },
+        {
+          "name": "Ken VanDine",
+          "score": 13,
+          "related_files_touched": 0,
+          "related_files": []
+        },
+        {
+          "name": "Andreia",
+          "score": 6,
+          "related_files_touched": 3,
+          "related_files": [
+            "docs/.readthedocs.yaml",
+            "docs/conf.py",
+            "docs/howto/change-mesa-graphics.md"
+          ]
+        },
+        {
+          "name": "Ash",
+          "score": 6,
+          "related_files_touched": 0,
+          "related_files": []
+        },
+        {
+          "name": "James Henstridge",
+          "score": 4,
+          "related_files_touched": 0,
+          "related_files": []
+        },
+        {
+          "name": "Sergio Costas Rodriguez",
+          "score": 3,
+          "related_files_touched": 0,
+          "related_files": []
+        },
+        {
+          "name": "Zoe Spellman",
+          "score": 3,
+          "related_files_touched": 0,
+          "related_files": []
+        },
+        {
+          "name": "Jesús Soto",
+          "score": 2,
+          "related_files_touched": 0,
+          "related_files": []
+        },
+        {
+          "name": "Kyuyrii",
+          "score": 2,
+          "related_files_touched": 0,
+          "related_files": []
+        },
+        {
+          "name": "fntenjr",
+          "score": 2,
+          "related_files_touched": 0,
+          "related_files": []
+        },
+        {
+          "name": "jssotomdz",
+          "score": 2,
+          "related_files_touched": 0,
+          "related_files": []
+        },
+        {
+          "name": "Alberto Contreras",
+          "score": 1,
+          "related_files_touched": 0,
+          "related_files": []
+        },
+        {
+          "name": "Denis Moskal",
+          "score": 1,
+          "related_files_touched": 0,
+          "related_files": []
+        },
+        {
+          "name": "Didier Roche",
+          "score": 1,
+          "related_files_touched": 0,
+          "related_files": []
+        },
+        {
+          "name": "Shane Crowley",
+          "score": 1,
+          "related_files_touched": 0,
+          "related_files": []
+        },
+        {
+          "name": "Umayr",
+          "score": 1,
+          "related_files_touched": 0,
+          "related_files": []
+        },
+        {
+          "name": "soredake",
+          "score": 1,
+          "related_files_touched": 0,
+          "related_files": []
+        }
+      ]
+    },
+    {
+      "file": ".github/ISSUE_TEMPLATE/bug_report.yml",
+      "risk_level": "HIGH",
+      "why": "2 contributors, last touched 207 days ago, doc score 18.0/100.",
+      "owners": [
+        "ashuntu",
+        "Ash"
+      ],
+      "best_backup": "shanecrowley (touched 0 related files, score 52)",
+      "backup_ranking": [
+        {
+          "name": "shanecrowley",
+          "score": 52,
+          "related_files_touched": 0,
+          "related_files": []
+        },
+        {
+          "name": "andreia",
+          "score": 23,
+          "related_files_touched": 1,
+          "related_files": [
+            ".github/workflows/build-snap.yml"
+          ]
+        },
+        {
+          "name": "Ken VanDine",
+          "score": 13,
+          "related_files_touched": 0,
+          "related_files": []
+        },
+        {
+          "name": "James Henstridge",
+          "score": 5,
+          "related_files_touched": 1,
+          "related_files": [
+            ".github/workflows/build-snap.yml"
+          ]
+        },
+        {
+          "name": "Andreia",
+          "score": 3,
+          "related_files_touched": 0,
+          "related_files": []
+        },
+        {
+          "name": "Sergio Costas Rodriguez",
+          "score": 3,
+          "related_files_touched": 0,
+          "related_files": []
+        },
+        {
+          "name": "Zoe Spellman",
+          "score": 3,
+          "related_files_touched": 0,
+          "related_files": []
+        },
+        {
+          "name": "jssotomdz",
+          "score": 3,
+          "related_files_touched": 1,
+          "related_files": [
+            ".github/workflows/build-snap.yml"
+          ]
+        },
+        {
+          "name": "Didier Roche",
+          "score": 2,
+          "related_files_touched": 1,
+          "related_files": [
+            ".github/.jira_sync_config.yaml"
+          ]
+        },
+        {
+          "name": "Jesús Soto",
+          "score": 2,
+          "related_files_touched": 0,
+          "related_files": []
+        },
+        {
+          "name": "Kyuyrii",
+          "score": 2,
+          "related_files_touched": 0,
+          "related_files": []
+        },
+        {
+          "name": "fntenjr",
+          "score": 2,
+          "related_files_touched": 0,
+          "related_files": []
+        },
+        {
+          "name": "Alberto Contreras",
+          "score": 1,
+          "related_files_touched": 0,
+          "related_files": []
+        },
+        {
+          "name": "Denis Moskal",
+          "score": 1,
+          "related_files_touched": 0,
+          "related_files": []
+        },
+        {
+          "name": "Shane Crowley",
+          "score": 1,
+          "related_files_touched": 0,
+          "related_files": []
+        },
+        {
+          "name": "Umayr",
+          "score": 1,
+          "related_files_touched": 0,
+          "related_files": []
+        },
+        {
+          "name": "soredake",
+          "score": 1,
+          "related_files_touched": 0,
+          "related_files": []
+        }
+      ]
+    },
+    {
+      "file": "docs/.sphinx/.pymarkdown.json",
+      "risk_level": "HIGH",
+      "why": "1 contributor, last touched 193 days ago, doc score 18.0/100.",
+      "owners": [
+        "shanecrowley"
+      ],
+      "best_backup": "andreia (touched 21 related files, score 43)",
+      "backup_ranking": [
+        {
+          "name": "andreia",
+          "score": 43,
+          "related_files_touched": 21,
+          "related_files": [
+            "docs/.custom_wordlist.txt",
+            "docs/.readthedocs.yaml",
+            "docs/conf.py",
+            "docs/contributing/development.md",
+            "docs/explanation/index.md",
+            "docs/explanation/snap-versus-deb.md",
+            "docs/explanation/what-games-can-i-play.md",
+            "docs/howto/change-mesa-graphics.md",
+            "docs/howto/configure-mangohud.md",
+            "docs/howto/configure-proton.md",
+            "docs/howto/dedicated-gpu.md",
+            "docs/howto/index.md",
+            "docs/howto/install.md",
+            "docs/howto/set-up-controller.md",
+            "docs/howto/troubleshooting/game-workarounds.md",
+            "docs/howto/troubleshooting/index.md",
+            "docs/howto/update-version.md",
+            "docs/index.md",
+            "docs/reference/external-libraries.md",
+            "docs/reference/glossary.md",
+            "docs/reference/index.md"
+          ]
+        },
+        {
+          "name": "ashuntu",
+          "score": 16,
+          "related_files_touched": 2,
+          "related_files": [
+            "docs/howto/configure-mangohud.md",
+            "docs/reference/index.md"
+          ]
+        },
+        {
+          "name": "Ken VanDine",
+          "score": 13,
+          "related_files_touched": 0,
+          "related_files": []
+        },
+        {
+          "name": "Andreia",
+          "score": 6,
+          "related_files_touched": 3,
+          "related_files": [
+            "docs/.readthedocs.yaml",
+            "docs/conf.py",
+            "docs/howto/change-mesa-graphics.md"
+          ]
+        },
+        {
+          "name": "Ash",
+          "score": 6,
+          "related_files_touched": 0,
+          "related_files": []
+        },
+        {
+          "name": "James Henstridge",
+          "score": 4,
+          "related_files_touched": 0,
+          "related_files": []
+        },
+        {
+          "name": "Sergio Costas Rodriguez",
+          "score": 3,
+          "related_files_touched": 0,
+          "related_files": []
+        },
+        {
+          "name": "Zoe Spellman",
+          "score": 3,
+          "related_files_touched": 0,
+          "related_files": []
+        },
+        {
+          "name": "Jesús Soto",
+          "score": 2,
+          "related_files_touched": 0,
+          "related_files": []
+        },
+        {
+          "name": "Kyuyrii",
+          "score": 2,
+          "related_files_touched": 0,
+          "related_files": []
+        },
+        {
+          "name": "fntenjr",
+          "score": 2,
+          "related_files_touched": 0,
+          "related_files": []
+        },
+        {
+          "name": "jssotomdz",
+          "score": 2,
+          "related_files_touched": 0,
+          "related_files": []
+        },
+        {
+          "name": "Alberto Contreras",
+          "score": 1,
+          "related_files_touched": 0,
+          "related_files": []
+        },
+        {
+          "name": "Denis Moskal",
+          "score": 1,
+          "related_files_touched": 0,
+          "related_files": []
+        },
+        {
+          "name": "Didier Roche",
+          "score": 1,
+          "related_files_touched": 0,
+          "related_files": []
+        },
+        {
+          "name": "Shane Crowley",
+          "score": 1,
+          "related_files_touched": 0,
+          "related_files": []
+        },
+        {
+          "name": "Umayr",
+          "score": 1,
+          "related_files_touched": 0,
+          "related_files": []
+        },
+        {
+          "name": "soredake",
+          "score": 1,
+          "related_files_touched": 0,
+          "related_files": []
+        }
+      ]
+    },
+    {
+      "file": "src/nvidia32",
+      "risk_level": "HIGH",
+      "why": "1 contributor, last touched 667 days ago, doc score 23.0/100.",
+      "owners": [
+        "ashuntu"
+      ],
+      "best_backup": "shanecrowley (touched 0 related files, score 52)",
+      "backup_ranking": [
+        {
+          "name": "shanecrowley",
+          "score": 52,
+          "related_files_touched": 0,
+          "related_files": []
+        },
+        {
+          "name": "Ken VanDine",
+          "score": 25,
+          "related_files_touched": 6,
+          "related_files": [
+            "src/desktop-launch",
+            "src/glxgears",
+            "src/glxinfo",
+            "src/steam-snap.sh",
+            "src/vkcube",
+            "src/vulkaninfo"
+          ]
+        },
+        {
+          "name": "andreia",
+          "score": 22,
+          "related_files_touched": 0,
+          "related_files": []
+        },
+        {
+          "name": "Ash",
+          "score": 10,
+          "related_files_touched": 2,
+          "related_files": [
+            "src/desktop-launch",
+            "src/steamreport"
+          ]
+        },
+        {
+          "name": "Zoe Spellman",
+          "score": 7,
+          "related_files_touched": 2,
+          "related_files": [
+            "src/desktop-launch",
+            "src/vulkaninfo"
+          ]
+        },
+        {
+          "name": "Sergio Costas Rodriguez",
+          "score": 5,
+          "related_files_touched": 1,
+          "related_files": [
+            "src/desktop-launch"
+          ]
+        },
+        {
+          "name": "James Henstridge",
+          "score": 4,
+          "related_files_touched": 0,
+          "related_files": []
+        },
+        {
+          "name": "Jesús Soto",
+          "score": 4,
+          "related_files_touched": 1,
+          "related_files": [
+            "src/steam-snap.sh"
+          ]
+        },
+        {
+          "name": "Kyuyrii",
+          "score": 4,
+          "related_files_touched": 1,
+          "related_files": [
+            "src/desktop-launch"
+          ]
+        },
+        {
+          "name": "fntenjr",
+          "score": 4,
+          "related_files_touched": 1,
+          "related_files": [
+            "src/desktop-launch"
+          ]
+        },
+        {
+          "name": "Andreia",
+          "score": 3,
+          "related_files_touched": 0,
+          "related_files": []
+        },
+        {
+          "name": "Umayr",
+          "score": 3,
+          "related_files_touched": 1,
+          "related_files": [
+            "src/desktop-launch"
+          ]
+        },
+        {
+          "name": "jssotomdz",
+          "score": 2,
+          "related_files_touched": 0,
+          "related_files": []
+        },
+        {
+          "name": "Alberto Contreras",
+          "score": 1,
+          "related_files_touched": 0,
+          "related_files": []
+        },
+        {
+          "name": "Denis Moskal",
+          "score": 1,
+          "related_files_touched": 0,
+          "related_files": []
+        },
+        {
+          "name": "Didier Roche",
+          "score": 1,
+          "related_files_touched": 0,
+          "related_files": []
+        },
+        {
+          "name": "Shane Crowley",
+          "score": 1,
+          "related_files_touched": 0,
+          "related_files": []
+        },
+        {
+          "name": "soredake",
+          "score": 1,
+          "related_files_touched": 0,
+          "related_files": []
+        }
+      ]
+    },
+    {
+      "file": "docs/.sphinx/get_vale_conf.py",
+      "risk_level": "HIGH",
+      "why": "1 contributor, last touched 193 days ago, doc score 34.0/100.",
+      "owners": [
+        "shanecrowley"
+      ],
+      "best_backup": "andreia (touched 21 related files, score 43)",
+      "backup_ranking": [
+        {
+          "name": "andreia",
+          "score": 43,
+          "related_files_touched": 21,
+          "related_files": [
+            "docs/.custom_wordlist.txt",
+            "docs/.readthedocs.yaml",
+            "docs/conf.py",
+            "docs/contributing/development.md",
+            "docs/explanation/index.md",
+            "docs/explanation/snap-versus-deb.md",
+            "docs/explanation/what-games-can-i-play.md",
+            "docs/howto/change-mesa-graphics.md",
+            "docs/howto/configure-mangohud.md",
+            "docs/howto/configure-proton.md",
+            "docs/howto/dedicated-gpu.md",
+            "docs/howto/index.md",
+            "docs/howto/install.md",
+            "docs/howto/set-up-controller.md",
+            "docs/howto/troubleshooting/game-workarounds.md",
+            "docs/howto/troubleshooting/index.md",
+            "docs/howto/update-version.md",
+            "docs/index.md",
+            "docs/reference/external-libraries.md",
+            "docs/reference/glossary.md",
+            "docs/reference/index.md"
+          ]
+        },
+        {
+          "name": "ashuntu",
+          "score": 16,
+          "related_files_touched": 2,
+          "related_files": [
+            "docs/howto/configure-mangohud.md",
+            "docs/reference/index.md"
+          ]
+        },
+        {
+          "name": "Ken VanDine",
+          "score": 13,
+          "related_files_touched": 0,
+          "related_files": []
+        },
+        {
+          "name": "Andreia",
+          "score": 6,
+          "related_files_touched": 3,
+          "related_files": [
+            "docs/.readthedocs.yaml",
+            "docs/conf.py",
+            "docs/howto/change-mesa-graphics.md"
+          ]
+        },
+        {
+          "name": "Ash",
+          "score": 6,
+          "related_files_touched": 0,
+          "related_files": []
+        },
+        {
+          "name": "James Henstridge",
+          "score": 4,
+          "related_files_touched": 0,
+          "related_files": []
+        },
+        {
+          "name": "Sergio Costas Rodriguez",
+          "score": 3,
+          "related_files_touched": 0,
+          "related_files": []
+        },
+        {
+          "name": "Zoe Spellman",
+          "score": 3,
+          "related_files_touched": 0,
+          "related_files": []
+        },
+        {
+          "name": "Jesús Soto",
+          "score": 2,
+          "related_files_touched": 0,
+          "related_files": []
+        },
+        {
+          "name": "Kyuyrii",
+          "score": 2,
+          "related_files_touched": 0,
+          "related_files": []
+        },
+        {
+          "name": "fntenjr",
+          "score": 2,
+          "related_files_touched": 0,
+          "related_files": []
+        },
+        {
+          "name": "jssotomdz",
+          "score": 2,
+          "related_files_touched": 0,
+          "related_files": []
+        },
+        {
+          "name": "Alberto Contreras",
+          "score": 1,
+          "related_files_touched": 0,
+          "related_files": []
+        },
+        {
+          "name": "Denis Moskal",
+          "score": 1,
+          "related_files_touched": 0,
+          "related_files": []
+        },
+        {
+          "name": "Didier Roche",
+          "score": 1,
+          "related_files_touched": 0,
+          "related_files": []
+        },
+        {
+          "name": "Shane Crowley",
+          "score": 1,
+          "related_files_touched": 0,
+          "related_files": []
+        },
+        {
+          "name": "Umayr",
+          "score": 1,
+          "related_files_touched": 0,
+          "related_files": []
+        },
+        {
+          "name": "soredake",
+          "score": 1,
+          "related_files_touched": 0,
+          "related_files": []
+        }
+      ]
+    }
+  ]
+}
