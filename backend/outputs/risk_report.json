@@ -1,0 +1,578 @@
+[
+  {
+    "file": "docs/.sphinx/_static/js/overwrite_links.js",
+    "author_count": 1,
+    "last_touch_days_ago": 39,
+    "complexity_score": 8.15,
+    "doc_score": 0,
+    "risk_level": "HIGH",
+    "why": "1 contributor, last touched 39 days ago, zero comments (doc score 0.0/100)."
+  },
+  {
+    "file": "docs/.sphinx/_templates/footer.html",
+    "author_count": 1,
+    "last_touch_days_ago": 39,
+    "complexity_score": 16.56,
+    "doc_score": 0,
+    "risk_level": "HIGH",
+    "why": "1 contributor, last touched 39 days ago, zero comments (doc score 0.0/100)."
+  },
+  {
+    "file": "docs/.sphinx/_templates/header.html",
+    "author_count": 1,
+    "last_touch_days_ago": 39,
+    "complexity_score": 11.58,
+    "doc_score": 0,
+    "risk_level": "HIGH",
+    "why": "1 contributor, last touched 39 days ago, zero comments (doc score 0.0/100)."
+  },
+  {
+    "file": "docs/.sphinx/_templates/page.html",
+    "author_count": 1,
+    "last_touch_days_ago": 94,
+    "complexity_score": 9.81,
+    "doc_score": 0,
+    "risk_level": "HIGH",
+    "why": "1 contributor, last touched 94 days ago, zero comments (doc score 0.0/100)."
+  },
+  {
+    "file": ".github/ISSUE_TEMPLATE/bug_report.yml",
+    "author_count": 1,
+    "last_touch_days_ago": 208,
+    "complexity_score": 16.08,
+    "doc_score": 18,
+    "risk_level": "HIGH",
+    "why": "1 contributor, last touched 208 days ago, doc score 18.0/100."
+  },
+  {
+    "file": "docs/.sphinx/.pymarkdown.json",
+    "author_count": 1,
+    "last_touch_days_ago": 194,
+    "complexity_score": 7.4,
+    "doc_score": 18,
+    "risk_level": "HIGH",
+    "why": "1 contributor, last touched 194 days ago, doc score 18.0/100."
+  },
+  {
+    "file": "src/nvidia32",
+    "author_count": 1,
+    "last_touch_days_ago": 668,
+    "complexity_score": 27.49,
+    "doc_score": 23,
+    "risk_level": "HIGH",
+    "why": "1 contributor, last touched 668 days ago, doc score 23.0/100."
+  },
+  {
+    "file": "docs/.sphinx/get_vale_conf.py",
+    "author_count": 1,
+    "last_touch_days_ago": 194,
+    "complexity_score": 21.46,
+    "doc_score": 34,
+    "risk_level": "HIGH",
+    "why": "1 contributor, last touched 194 days ago, doc score 34.0/100."
+  },
+  {
+    "file": ".gitignore",
+    "author_count": 2,
+    "last_touch_days_ago": 319,
+    "complexity_score": 1.13,
+    "doc_score": 0,
+    "risk_level": "MEDIUM",
+    "why": "2 contributors, last touched 319 days ago, zero comments (doc score 0.0/100)."
+  },
+  {
+    "file": "docs/.gitignore",
+    "author_count": 1,
+    "last_touch_days_ago": 194,
+    "complexity_score": 4.18,
+    "doc_score": 0,
+    "risk_level": "MEDIUM",
+    "why": "1 contributor, last touched 194 days ago, zero comments (doc score 0.0/100)."
+  },
+  {
+    "file": "docs/.sphinx/.pre-commit-config.yaml",
+    "author_count": 1,
+    "last_touch_days_ago": 194,
+    "complexity_score": 3.7,
+    "doc_score": 0,
+    "risk_level": "MEDIUM",
+    "why": "1 contributor, last touched 194 days ago, zero comments (doc score 0.0/100)."
+  },
+  {
+    "file": "docs/.sphinx/_static/css/dropdown.css",
+    "author_count": 1,
+    "last_touch_days_ago": 194,
+    "complexity_score": 0.48,
+    "doc_score": 0,
+    "risk_level": "MEDIUM",
+    "why": "1 contributor, last touched 194 days ago, zero comments (doc score 0.0/100)."
+  },
+  {
+    "file": "docs/.sphinx/_static/css/snap-badge.css",
+    "author_count": 1,
+    "last_touch_days_ago": 94,
+    "complexity_score": 1.13,
+    "doc_score": 0,
+    "risk_level": "MEDIUM",
+    "why": "1 contributor, last touched 94 days ago, zero comments (doc score 0.0/100)."
+  },
+  {
+    "file": "docs/.sphinx/version",
+    "author_count": 1,
+    "last_touch_days_ago": 194,
+    "complexity_score": 0.16,
+    "doc_score": 0,
+    "risk_level": "MEDIUM",
+    "why": "1 contributor, last touched 194 days ago, zero comments (doc score 0.0/100)."
+  },
+  {
+    "file": "docs/requirements.txt",
+    "author_count": 1,
+    "last_touch_days_ago": 194,
+    "complexity_score": 5.14,
+    "doc_score": 0,
+    "risk_level": "MEDIUM",
+    "why": "1 contributor, last touched 194 days ago, zero comments (doc score 0.0/100)."
+  },
+  {
+    "file": "snap/keys/B05498B7.asc",
+    "author_count": 1,
+    "last_touch_days_ago": 1508,
+    "complexity_score": 6.91,
+    "doc_score": 0,
+    "risk_level": "MEDIUM",
+    "why": "1 contributor, last touched 1508 days ago, zero comments (doc score 0.0/100)."
+  },
+  {
+    "file": ".github/.jira_sync_config.yaml",
+    "author_count": 1,
+    "last_touch_days_ago": 564,
+    "complexity_score": 1.45,
+    "doc_score": 18,
+    "risk_level": "MEDIUM",
+    "why": "1 contributor, last touched 564 days ago, doc score 18.0/100."
+  },
+  {
+    "file": ".github/ISSUE_TEMPLATE/feature_request.yml",
+    "author_count": 1,
+    "last_touch_days_ago": 319,
+    "complexity_score": 6.27,
+    "doc_score": 18,
+    "risk_level": "MEDIUM",
+    "why": "1 contributor, last touched 319 days ago, doc score 18.0/100."
+  },
+  {
+    "file": "docs/reuse/substitutions.yaml",
+    "author_count": 1,
+    "last_touch_days_ago": 194,
+    "complexity_score": 0.64,
+    "doc_score": 28,
+    "risk_level": "MEDIUM",
+    "why": "1 contributor, last touched 194 days ago, doc score 28.0/100."
+  },
+  {
+    "file": "src/vkcube",
+    "author_count": 1,
+    "last_touch_days_ago": 1326,
+    "complexity_score": 0.64,
+    "doc_score": 30,
+    "risk_level": "MEDIUM",
+    "why": "1 contributor, last touched 1326 days ago, doc score 30.0/100."
+  },
+  {
+    "file": "tests/glx",
+    "author_count": 1,
+    "last_touch_days_ago": 1331,
+    "complexity_score": 0.64,
+    "doc_score": 30,
+    "risk_level": "MEDIUM",
+    "why": "1 contributor, last touched 1331 days ago, doc score 30.0/100."
+  },
+  {
+    "file": "tests/run.sh",
+    "author_count": 1,
+    "last_touch_days_ago": 1326,
+    "complexity_score": 0.64,
+    "doc_score": 30,
+    "risk_level": "MEDIUM",
+    "why": "1 contributor, last touched 1326 days ago, doc score 30.0/100."
+  },
+  {
+    "file": "docs/.sphinx/pa11y.json",
+    "author_count": 1,
+    "last_touch_days_ago": 194,
+    "complexity_score": 1.45,
+    "doc_score": 38,
+    "risk_level": "MEDIUM",
+    "why": "1 contributor, last touched 194 days ago, doc score 38.0/100."
+  },
+  {
+    "file": "src/glxgears",
+    "author_count": 1,
+    "last_touch_days_ago": 1326,
+    "complexity_score": 0.64,
+    "doc_score": 38,
+    "risk_level": "MEDIUM",
+    "why": "1 contributor, last touched 1326 days ago, doc score 38.0/100."
+  },
+  {
+    "file": "src/glxinfo",
+    "author_count": 1,
+    "last_touch_days_ago": 1326,
+    "complexity_score": 0.64,
+    "doc_score": 38,
+    "risk_level": "MEDIUM",
+    "why": "1 contributor, last touched 1326 days ago, doc score 38.0/100."
+  },
+  {
+    "file": "src/steamreport",
+    "author_count": 1,
+    "last_touch_days_ago": 1104,
+    "complexity_score": 75.88,
+    "doc_score": 40,
+    "risk_level": "MEDIUM",
+    "why": "1 contributor, last touched 1104 days ago, doc score 40.0/100."
+  },
+  {
+    "file": "docs/.sphinx/update_sp.py",
+    "author_count": 1,
+    "last_touch_days_ago": 194,
+    "complexity_score": 42.12,
+    "doc_score": 41,
+    "risk_level": "MEDIUM",
+    "why": "1 contributor, last touched 194 days ago, doc score 41.0/100."
+  },
+  {
+    "file": "docs/Makefile",
+    "author_count": 1,
+    "last_touch_days_ago": 194,
+    "complexity_score": 27.81,
+    "doc_score": 60,
+    "risk_level": "MEDIUM",
+    "why": "1 contributor, last touched 194 days ago, doc score 60.0/100."
+  },
+  {
+    "file": "docs/conf.py",
+    "author_count": 2,
+    "last_touch_days_ago": 38,
+    "complexity_score": 14.63,
+    "doc_score": 61,
+    "risk_level": "MEDIUM",
+    "why": "2 contributors, last touched 38 days ago, doc score 61.0/100."
+  },
+  {
+    "file": "docs/reuse/mermaid.txt",
+    "author_count": 1,
+    "last_touch_days_ago": 194,
+    "complexity_score": 50.32,
+    "doc_score": 66,
+    "risk_level": "MEDIUM",
+    "why": "1 contributor, last touched 194 days ago, doc score 66.0/100."
+  },
+  {
+    "file": "docs/reuse/links.txt",
+    "author_count": 1,
+    "last_touch_days_ago": 194,
+    "complexity_score": 7.4,
+    "doc_score": 69,
+    "risk_level": "MEDIUM",
+    "why": "1 contributor, last touched 194 days ago, doc score 69.0/100."
+  },
+  {
+    "file": "snap/gui/steam.desktop",
+    "author_count": 1,
+    "last_touch_days_ago": 1093,
+    "complexity_score": 45.98,
+    "doc_score": 75,
+    "risk_level": "MEDIUM",
+    "why": "1 contributor, last touched 1093 days ago, doc score 75.0/100."
+  },
+  {
+    "file": "docs/explanation/snap-versus-deb.md",
+    "author_count": 2,
+    "last_touch_days_ago": 124,
+    "complexity_score": 11.25,
+    "doc_score": 92,
+    "risk_level": "MEDIUM",
+    "why": "2 contributors, last touched 124 days ago, doc score 92.0/100."
+  },
+  {
+    "file": "docs/howto/configure-proton.md",
+    "author_count": 2,
+    "last_touch_days_ago": 122,
+    "complexity_score": 10.29,
+    "doc_score": 93,
+    "risk_level": "MEDIUM",
+    "why": "2 contributors, last touched 122 days ago, doc score 93.0/100."
+  },
+  {
+    "file": "docs/howto/dedicated-gpu.md",
+    "author_count": 2,
+    "last_touch_days_ago": 124,
+    "complexity_score": 8.84,
+    "doc_score": 93,
+    "risk_level": "MEDIUM",
+    "why": "2 contributors, last touched 124 days ago, doc score 93.0/100."
+  },
+  {
+    "file": "docs/howto/set-up-controller.md",
+    "author_count": 2,
+    "last_touch_days_ago": 124,
+    "complexity_score": 7.56,
+    "doc_score": 93,
+    "risk_level": "MEDIUM",
+    "why": "2 contributors, last touched 124 days ago, doc score 93.0/100."
+  },
+  {
+    "file": "docs/howto/troubleshooting/index.md",
+    "author_count": 2,
+    "last_touch_days_ago": 122,
+    "complexity_score": 29.26,
+    "doc_score": 93,
+    "risk_level": "MEDIUM",
+    "why": "2 contributors, last touched 122 days ago, doc score 93.0/100."
+  },
+  {
+    "file": "docs/contributing/documentation.md",
+    "author_count": 1,
+    "last_touch_days_ago": 123,
+    "complexity_score": 16.72,
+    "doc_score": 94,
+    "risk_level": "MEDIUM",
+    "why": "1 contributor, last touched 123 days ago, doc score 94.0/100."
+  },
+  {
+    "file": "docs/contributing/reports.md",
+    "author_count": 1,
+    "last_touch_days_ago": 122,
+    "complexity_score": 15.59,
+    "doc_score": 94,
+    "risk_level": "MEDIUM",
+    "why": "1 contributor, last touched 122 days ago, doc score 94.0/100."
+  },
+  {
+    "file": "docs/howto/install.md",
+    "author_count": 2,
+    "last_touch_days_ago": 122,
+    "complexity_score": 15.43,
+    "doc_score": 94,
+    "risk_level": "MEDIUM",
+    "why": "2 contributors, last touched 122 days ago, doc score 94.0/100."
+  },
+  {
+    "file": "docs/howto/update-version.md",
+    "author_count": 2,
+    "last_touch_days_ago": 124,
+    "complexity_score": 8.84,
+    "doc_score": 94,
+    "risk_level": "MEDIUM",
+    "why": "2 contributors, last touched 124 days ago, doc score 94.0/100."
+  },
+  {
+    "file": "docs/contributing/development.md",
+    "author_count": 2,
+    "last_touch_days_ago": 123,
+    "complexity_score": 25.72,
+    "doc_score": 95,
+    "risk_level": "MEDIUM",
+    "why": "2 contributors, last touched 123 days ago, doc score 95.0/100."
+  },
+  {
+    "file": "docs/howto/troubleshooting/game-workarounds.md",
+    "author_count": 2,
+    "last_touch_days_ago": 124,
+    "complexity_score": 17.36,
+    "doc_score": 95,
+    "risk_level": "MEDIUM",
+    "why": "2 contributors, last touched 124 days ago, doc score 95.0/100."
+  },
+  {
+    "file": "docs/index.md",
+    "author_count": 2,
+    "last_touch_days_ago": 94,
+    "complexity_score": 9.81,
+    "doc_score": 95,
+    "risk_level": "MEDIUM",
+    "why": "2 contributors, last touched 94 days ago, doc score 95.0/100."
+  },
+  {
+    "file": "docs/reference/glossary.md",
+    "author_count": 2,
+    "last_touch_days_ago": 124,
+    "complexity_score": 7.4,
+    "doc_score": 95,
+    "risk_level": "MEDIUM",
+    "why": "2 contributors, last touched 124 days ago, doc score 95.0/100."
+  },
+  {
+    "file": "docs/.custom_wordlist.txt",
+    "author_count": 2,
+    "last_touch_days_ago": 124,
+    "complexity_score": 12.54,
+    "doc_score": 99,
+    "risk_level": "MEDIUM",
+    "why": "2 contributors, last touched 124 days ago, doc score 99.0/100."
+  },
+  {
+    "file": ".github/workflows/build-snap.yml",
+    "author_count": 4,
+    "last_touch_days_ago": 141,
+    "complexity_score": 3.7,
+    "doc_score": 18,
+    "risk_level": "LOW",
+    "why": "4 contributors, last touched 141 days ago, doc score 18.0/100."
+  },
+  {
+    "file": "src/vulkaninfo",
+    "author_count": 3,
+    "last_touch_days_ago": 1181,
+    "complexity_score": 0.64,
+    "doc_score": 30,
+    "risk_level": "LOW",
+    "why": "3 contributors, last touched 1181 days ago, doc score 30.0/100."
+  },
+  {
+    "file": "snap/snapcraft.yaml",
+    "author_count": 11,
+    "last_touch_days_ago": 2,
+    "complexity_score": 100.0,
+    "doc_score": 42,
+    "risk_level": "LOW",
+    "why": "11 contributors, last touched 2 days ago, doc score 42.0/100."
+  },
+  {
+    "file": "src/desktop-launch",
+    "author_count": 7,
+    "last_touch_days_ago": 51,
+    "complexity_score": 67.85,
+    "doc_score": 48,
+    "risk_level": "LOW",
+    "why": "7 contributors, last touched 51 days ago, doc score 48.0/100."
+  },
+  {
+    "file": "src/steam-snap.sh",
+    "author_count": 2,
+    "last_touch_days_ago": 1278,
+    "complexity_score": 2.57,
+    "doc_score": 48,
+    "risk_level": "LOW",
+    "why": "2 contributors, last touched 1278 days ago, doc score 48.0/100."
+  },
+  {
+    "file": "docs/reuse/substitutions.txt",
+    "author_count": 1,
+    "last_touch_days_ago": 194,
+    "complexity_score": 1.13,
+    "doc_score": 50,
+    "risk_level": "LOW",
+    "why": "1 contributor, last touched 194 days ago, doc score 50.0/100."
+  },
+  {
+    "file": "docs/.readthedocs.yaml",
+    "author_count": 2,
+    "last_touch_days_ago": 95,
+    "complexity_score": 6.27,
+    "doc_score": 58,
+    "risk_level": "LOW",
+    "why": "2 contributors, last touched 95 days ago, doc score 58.0/100."
+  },
+  {
+    "file": "snap/hooks/configure",
+    "author_count": 2,
+    "last_touch_days_ago": 964,
+    "complexity_score": 7.23,
+    "doc_score": 66,
+    "risk_level": "LOW",
+    "why": "2 contributors, last touched 964 days ago, doc score 66.0/100."
+  },
+  {
+    "file": ".github/ISSUE_TEMPLATE/generic_issue.md",
+    "author_count": 1,
+    "last_touch_days_ago": 1139,
+    "complexity_score": 2.25,
+    "doc_score": 67,
+    "risk_level": "LOW",
+    "why": "1 contributor, last touched 1139 days ago, doc score 67.0/100."
+  },
+  {
+    "file": "tests/vulkan",
+    "author_count": 2,
+    "last_touch_days_ago": 1181,
+    "complexity_score": 2.09,
+    "doc_score": 68,
+    "risk_level": "LOW",
+    "why": "2 contributors, last touched 1181 days ago, doc score 68.0/100."
+  },
+  {
+    "file": "docs/explanation/index.md",
+    "author_count": 2,
+    "last_touch_days_ago": 124,
+    "complexity_score": 1.93,
+    "doc_score": 80,
+    "risk_level": "LOW",
+    "why": "2 contributors, last touched 124 days ago, doc score 80.0/100."
+  },
+  {
+    "file": "docs/reference/index.md",
+    "author_count": 3,
+    "last_touch_days_ago": 82,
+    "complexity_score": 1.93,
+    "doc_score": 80,
+    "risk_level": "LOW",
+    "why": "3 contributors, last touched 82 days ago, doc score 80.0/100."
+  },
+  {
+    "file": "README.md",
+    "author_count": 6,
+    "last_touch_days_ago": 94,
+    "complexity_score": 4.66,
+    "doc_score": 92,
+    "risk_level": "LOW",
+    "why": "6 contributors, last touched 94 days ago, doc score 92.0/100."
+  },
+  {
+    "file": "docs/explanation/what-games-can-i-play.md",
+    "author_count": 2,
+    "last_touch_days_ago": 122,
+    "complexity_score": 4.98,
+    "doc_score": 94,
+    "risk_level": "LOW",
+    "why": "2 contributors, last touched 122 days ago, doc score 94.0/100."
+  },
+  {
+    "file": "docs/howto/configure-mangohud.md",
+    "author_count": 3,
+    "last_touch_days_ago": 87,
+    "complexity_score": 10.45,
+    "doc_score": 94,
+    "risk_level": "LOW",
+    "why": "3 contributors, last touched 87 days ago, doc score 94.0/100."
+  },
+  {
+    "file": "docs/howto/change-mesa-graphics.md",
+    "author_count": 2,
+    "last_touch_days_ago": 93,
+    "complexity_score": 5.31,
+    "doc_score": 95,
+    "risk_level": "LOW",
+    "why": "2 contributors, last touched 93 days ago, doc score 95.0/100."
+  },
+  {
+    "file": "docs/howto/index.md",
+    "author_count": 2,
+    "last_touch_days_ago": 123,
+    "complexity_score": 3.54,
+    "doc_score": 95,
+    "risk_level": "LOW",
+    "why": "2 contributors, last touched 123 days ago, doc score 95.0/100."
+  },
+  {
+    "file": "docs/reference/external-libraries.md",
+    "author_count": 2,
+    "last_touch_days_ago": 124,
+    "complexity_score": 4.18,
+    "doc_score": 95,
+    "risk_level": "LOW",
+    "why": "2 contributors, last touched 124 days ago, doc score 95.0/100."
+  }
+]

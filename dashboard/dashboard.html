@@ -1,0 +1,1066 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Knowledge Continuity Suite — Dashboard (6 reports embedded)</title>
+
+</head>
+<body>
+<header class="topbar">
+  <div class="topbar-inner">
+    <div class="brand">
+      <div class="brand-mark">KC</div>
+      <div>
+        <div class="brand-name">Knowledge Continuity Suite</div>
+        <div class="brand-sub">Bus-factor risk mapper &middot; onboarding readiness &middot; extraction assistant</div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<nav class="tabs" id="tabs">
+  <button class="tab active" data-tab="overview">Overview</button>
+  <button class="tab" data-tab="risk">Risk Mapper</button>
+  <button class="tab" data-tab="busfactor">Bus-Factor</button>
+  <button class="tab" data-tab="complexity">Complexity</button>
+  <button class="tab" data-tab="documentation">Documentation</button>
+  <button class="tab" data-tab="pipeline">Pipeline</button>
+  <button class="tab" data-tab="onboarding">Onboarding</button>
+  <button class="tab" data-tab="extraction">Draft Extraction</button>
+</nav>
+
+<main id="view" class="view"></main>
+
+<div class="modal-backdrop" id="modal-backdrop">
+  <div class="modal" id="modal" role="dialog" aria-modal="true"></div>
+</div>
+
+<style>
+:root {
+  --bg: #0b0f17;
+  --surface: #131a26;
+  --surface-2: #182136;
+  --border: #24304a;
+  --text: #e6ebf5;
+  --muted: #8b98b3;
+  --accent-1: #4f8cff;
+  --accent-2: #22c1a3;
+  --accent-3: #b58cff;
+  --high: #ff5d6c;
+  --medium: #ffb547;
+  --low: #4ade80;
+  --cold: #7d8aa5;
+  --familiar: #ffb547;
+  --ready: #4ade80;
+  --shadow: 0 12px 32px rgba(0,0,0,.45);
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  font-size: 15px;
+  line-height: 1.5;
+}
+
+.topbar {
+  border-bottom: 1px solid var(--border);
+  background: linear-gradient(180deg, #0e1420, var(--bg));
+}
+.topbar-inner {
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: 18px 22px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 18px;
+  flex-wrap: wrap;
+}
+.brand { display: flex; align-items: center; gap: 14px; }
+.brand-mark {
+  width: 46px; height: 46px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, var(--accent-1), var(--accent-3));
+  display: grid; place-items: center;
+  font-weight: 800; font-size: 17px; letter-spacing: .5px;
+  color: #fff;
+}
+.brand-name { font-weight: 700; font-size: 17px; }
+.brand-sub { color: var(--muted); font-size: 12.5px; }
+
+.tabs {
+  position: sticky; top: 0; z-index: 20;
+  background: rgba(11,15,23,.92);
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid var(--border);
+  display: flex; gap: 2px; overflow-x: auto;
+  padding: 8px 14px;
+  justify-content: center;
+}
+.tab {
+  appearance: none; border: none; cursor: pointer;
+  background: transparent; color: var(--muted);
+  font-size: 13.5px; font-weight: 600;
+  padding: 9px 14px; border-radius: 9px;
+  white-space: nowrap;
+  transition: color .15s, background .15s;
+}
+.tab:hover { color: var(--text); background: var(--surface); }
+.tab.active { color: #fff; background: var(--surface-2); box-shadow: inset 0 0 0 1px var(--border); }
+
+.view { max-width: 1240px; margin: 0 auto; padding: 24px 22px 90px; }
+
+.view-head { margin-bottom: 18px; }
+.view-head h2 { margin: 0 0 4px; font-size: 22px; }
+.view-head .view-sub { color: var(--muted); font-size: 13.5px; }
+
+.stat-grid {
+  display: grid; gap: 14px; margin-bottom: 22px;
+  grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+}
+.stat {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 16px 18px;
+}
+.stat .stat-num { font-size: 28px; font-weight: 800; letter-spacing: -.5px; }
+.stat .stat-label { color: var(--muted); font-size: 12.5px; margin-top: 2px; }
+.stat .stat-note { font-size: 12px; color: var(--muted); margin-top: 6px; }
+
+.banner {
+  border-radius: 12px;
+  padding: 14px 18px;
+  margin: 0 0 20px;
+  border: 1px solid;
+  font-size: 13.5px;
+}
+.banner.alert { background: rgba(255,93,108,.08); border-color: rgba(255,93,108,.45); }
+.banner.info  { background: rgba(79,140,255,.07); border-color: rgba(79,140,255,.4); }
+.banner strong { font-weight: 700; }
+
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 18px;
+  margin-bottom: 18px;
+}
+.card h3 { margin: 0 0 12px; font-size: 15px; }
+
+table.tbl { width: 100%; border-collapse: collapse; font-size: 13px; }
+.tbl th {
+  text-align: left; color: var(--muted); font-weight: 600; font-size: 11.5px;
+  text-transform: uppercase; letter-spacing: .4px;
+  border-bottom: 1px solid var(--border);
+  padding: 8px 10px; white-space: nowrap;
+}
+.tbl td { padding: 8px 10px; border-bottom: 1px solid rgba(36,48,74,.4); vertical-align: middle; }
+.tbl tr.clickable { cursor: pointer; }
+.tbl tr.clickable:hover td { background: rgba(79,140,255,.06); }
+.tbl .num { text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.tbl tr.stale td { opacity: .55; }
+
+.file-cell { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: 12.5px; }
+.muted { color: var(--muted); }
+.nowrap { white-space: nowrap; }
+
+.badge {
+  display: inline-block; padding: 2px 9px; border-radius: 20px;
+  font-size: 11.5px; font-weight: 700; letter-spacing: .2px;
+}
+.badge.HIGH { background: rgba(255,93,108,.14); color: var(--high); }
+.badge.MEDIUM { background: rgba(255,181,71,.13); color: var(--medium); }
+.badge.LOW { background: rgba(74,222,128,.12); color: var(--low); }
+.badge.ready { background: rgba(74,222,128,.12); color: var(--ready); }
+.badge.familiar { background: rgba(255,181,71,.13); color: var(--familiar); }
+.badge.cold { background: rgba(125,138,165,.14); color: var(--cold); }
+
+.scorebar {
+  height: 6px; border-radius: 4px;
+  background: var(--surface-2); overflow: hidden;
+  min-width: 90px;
+}
+.scorebar > div { height: 100%; border-radius: 4px; }
+
+/* Tooltips */
+[data-tip] { position: relative; cursor: help; }
+th [data-tip] { border-bottom: 1px dashed rgba(139,152,179,.7); }
+[data-tip]:hover::after {
+  content: attr(data-tip);
+  position: absolute; bottom: calc(100% + 8px); left: 50%; transform: translateX(-50%);
+  z-index: 60; width: max-content; max-width: 280px; white-space: normal;
+  background: #0e1420; color: var(--text);
+  border: 1px solid var(--border); border-radius: 8px;
+  padding: 8px 10px; font-size: 12px; line-height: 1.45;
+  text-align: left; text-transform: none; font-weight: 400; letter-spacing: 0;
+  box-shadow: var(--shadow);
+}
+.stat-label[data-tip]:hover::after { bottom: calc(100% + 4px); }
+
+.toolbar { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; margin-bottom: 14px; }
+.toolbar input[type="search"] {
+  background: var(--surface-2); border: 1px solid var(--border); color: var(--text);
+  padding: 8px 12px; border-radius: 9px; font-size: 13px; width: 260px; max-width: 100%;
+}
+.toolbar .seg { display: inline-flex; background: var(--surface-2); border-radius: 9px; padding: 3px; gap: 2px; }
+.toolbar .seg button {
+  appearance: none; border: none; background: transparent; color: var(--muted);
+  font-size: 12px; font-weight: 600; padding: 6px 12px; border-radius: 7px; cursor: pointer;
+}
+.toolbar .seg button.active { background: var(--surface); color: #fff; }
+.toolbar label { font-size: 12.5px; color: var(--muted); }
+
+/* Onboarding */
+.ob-file { border-bottom: 1px solid rgba(36,48,74,.45); padding: 16px 0; }
+.ob-file:first-of-type { padding-top: 0; }
+.ob-file:last-of-type { border-bottom: none; padding-bottom: 0; }
+.ob-head { display: flex; justify-content: space-between; align-items: baseline; gap: 10px; flex-wrap: wrap; }
+.ob-owner { margin-top: 4px; font-size: 12.5px; color: var(--muted); }
+.backups { display: grid; gap: 8px; margin-top: 12px; }
+.backup-row {
+  display: grid; grid-template-columns: 1fr 150px auto minmax(160px,1.4fr);
+  gap: 12px; align-items: center;
+  background: var(--surface-2); border: 1px solid var(--border);
+  border-radius: 10px; padding: 10px 14px; font-size: 13px;
+}
+.backup-name { font-weight: 600; }
+.backup-score { text-align: right; font-variant-numeric: tabular-nums; font-weight: 700; }
+.backup-why { color: var(--muted); font-size: 12.5px; min-width: 0; }
+.ob-grid { display: grid; gap: 14px; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));}
+
+/* Extraction drafts */
+.draft-grid { display: grid; gap: 16px; grid-template-columns: repeat(auto-fit, minmax(420px, 1fr)); }
+.draft {
+  background: var(--surface); border: 1px solid var(--border); border-radius: 14px;
+  display: flex; flex-direction: column; overflow: hidden;
+}
+.draft-head { padding: 14px 16px; border-bottom: 1px solid var(--border); }
+.draft-file { font-family: ui-monospace, Menlo, monospace; font-size: 13px; font-weight: 700; word-break: break-all; }
+.draft-meta { display: flex; gap: 12px; margin-top: 8px; color: var(--muted); font-size: 12px; flex-wrap: wrap; }
+.draft-why { margin-top: 8px; color: var(--muted); font-size: 12px; line-height: 1.45; }
+.draft-body {
+  padding: 16px; max-height: 320px; overflow-y: auto;
+  font-size: 13px; color: var(--text);
+  flex: 1;
+}
+.draft-body pre { white-space: pre-wrap; font-family: inherit; margin: 4px 0; }
+.draft-body code { background: var(--surface-2); padding: 1px 5px; border-radius: 5px; font-size: 12px; }
+.draft-body .md-h { color: #fff; font-weight: 700; }
+.draft-body .md-h1 { font-size: 15px; margin: 10px 0 6px; }
+.draft-body .md-h2 { font-size: 13.5px; margin: 9px 0 4px; }
+.draft-body .md-h3 { font-size: 13px; margin: 7px 0 3px; }
+.draft-body .md-li { display: block; margin: 2px 0; }
+
+/* Modal */
+.modal-backdrop {
+  position: fixed; inset: 0; z-index: 50;
+  background: rgba(5,8,14,.72);
+  display: none;
+  place-items: center; padding: 20px;
+}
+.modal-backdrop.open { display: grid; }
+.modal {
+  position: relative;
+  width: min(860px, 100%);
+  max-height: 88vh; overflow-y: auto;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  box-shadow: var(--shadow);
+  padding: 24px;
+}
+.modal h2 { margin: 0 0 14px; font-size: 18px; }
+.modal-close {
+  position: absolute; top: 14px; right: 14px; cursor: pointer;
+  background: var(--surface-2); border: 1px solid var(--border); color: var(--muted);
+  width: 30px; height: 30px; border-radius: 8px; font-size: 14px;
+}
+.modal-sec { margin-top: 18px; }
+.modal-sec h3 { font-size: 13px; text-transform: uppercase; letter-spacing: .5px; color: var(--muted); margin: 0 0 8px; }
+.modal .kv { display: grid; grid-template-columns: 160px 1fr; gap: 6px 14px; font-size: 13px; }
+.modal .kv dt { color: var(--muted); }
+.modal .kv dd { margin: 0; }
+
+.footer { max-width: 1240px; margin: 0 auto; padding: 0 22px 30px; color: var(--muted); font-size: 12px; }
+
+.pipeline { display: flex; flex-direction: column; gap: 0; }
+.pnode {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 12px; padding: 14px 18px;
+  display: flex; align-items: center; justify-content: space-between; gap: 16px;
+}
+.pnode .pn-name { font-weight: 700; font-size: 14px; }
+.pnode .pn-role { color: var(--muted); font-size: 12.5px; margin-top: 3px; }
+.pnode .pn-out { color: var(--muted); font-size: 12px; text-align: right; white-space: nowrap; }
+.pnode + .parrow { margin-top: 6px; }
+.pnode .pn-num { font-variant-numeric: tabular-nums; font-weight: 700; }
+.parrow {
+  margin: 6px 0 6px 26px; padding-left: 12px; border-left: 2px solid var(--border);
+  color: var(--muted); font-size: 11.5px; min-height: 22px; line-height: 1.5;
+}
+.parrow .arlabel { border: 1px dashed var(--border); border-radius: 4px; padding: 0 6px; font-size: 10.5px; }
+.pmerge { margin: 0 0 0 26px; padding: 10px 12px; border-left: 2px solid var(--accent); }
+.pmerge-tag { display: inline-block; font-size: 10.5px; letter-spacing: .4px; text-transform: uppercase; color: var(--accent-2); border: 1px solid var(--accent); border-radius: 4px; padding: 0 6px; margin-bottom: 6px; }
+.p-agents { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; }
+.p-agent {
+  background: var(--surface-2); border: 1px solid var(--border); border-radius: 10px;
+  padding: 12px 14px; font-size: 12.5px;
+}
+.p-agent b { font-size: 13px; }
+
+.atlas { display: flex; flex-wrap: wrap; gap: 5px; }
+.atlas-cell {
+  border-radius: 5px; cursor: pointer; flex: none;
+  transition: transform .12s ease, box-shadow .12s ease;
+}
+.atlas-cell:hover {
+  transform: scale(1.18); box-shadow: 0 6px 18px rgba(0,0,0,.45);
+  outline: 2px solid rgba(255,255,255,.4); z-index: 3; position: relative;
+}
+.atlas-legend { display: flex; align-items: center; gap: 12px; font-size: 12px; color: var(--muted); }
+.atlas-legend i { display: inline-block; width: 12px; height: 12px; border-radius: 3px; margin-right: 5px; }
+#atlas-tip {
+  position: fixed; z-index: 1000; pointer-events: none; display: none;
+  max-width: 300px; background: var(--surface); border: 1px solid var(--border);
+  border-radius: 10px; padding: 9px 11px; font-size: 12px; line-height: 1.5;
+  box-shadow: 0 10px 30px rgba(0,0,0,.5);
+}
+#atlas-tip b { font-size: 12.5px; }
+#atlas-tip .tip-row { display: grid; grid-template-columns: auto 1fr; gap: 1px 10px; }
+#atlas-tip .tip-row span:nth-child(odd) { white-space: nowrap; }
+#atlas-tip .tip-row span { color: var(--muted); }
+#atlas-tip .tip-why { color: var(--muted); }
+
+@media (max-width: 720px) {
+  .backup-row { grid-template-columns: 1fr; }
+  .draft-grid { grid-template-columns: 1fr; }
+  .pnode { flex-direction: column; align-items: flex-start; }
+  .pnode .pn-out { text-align: left; }
+  .p-agents { grid-template-columns: 1fr; }
+}
+</style>
+<script>window.INLINE_REPORTS = {"contributor": {"agent": "contributor_agent", "repo": "/Users/zohairmoosavi/ibm-hackathon/knowledge-handoff-4/sample-repos/steam-snap", "file_count_analyzed": 73, "files": [{"file": "snap/keys/B05498B7.asc", "author_count": 1, "authors": ["James Henstridge <james@jamesh.id.au>"], "commit_count": 1, "last_touch_date": "2022-07-13", "days_since_last_touch": 1508}, {"file": "tests/glx", "author_count": 1, "authors": ["Ken VanDine <ken.vandine@canonical.com>"], "commit_count": 1, "last_touch_date": "2023-01-06", "days_since_last_touch": 1331}, {"file": "src/glxgears", "author_count": 1, "authors": ["Ken VanDine <ken.vandine@canonical.com, ken@vandine.org>"], "commit_count": 3, "last_touch_date": "2023-01-11", "days_since_last_touch": 1326}, {"file": "src/glxinfo", "author_count": 1, "authors": ["Ken VanDine <ken.vandine@canonical.com, ken@vandine.org>"], "commit_count": 3, "last_touch_date": "2023-01-11", "days_since_last_touch": 1326}, {"file": "src/vkcube", "author_count": 1, "authors": ["Ken VanDine <ken.vandine@canonical.com, ken@vandine.org>"], "commit_count": 3, "last_touch_date": "2023-01-11", "days_since_last_touch": 1326}, {"file": "tests/run.sh", "author_count": 1, "authors": ["Ken VanDine <ken.vandine@canonical.com, ken@vandine.org>"], "commit_count": 4, "last_touch_date": "2023-01-11", "days_since_last_touch": 1326}, {"file": ".github/ISSUE_TEMPLATE/generic_issue.md", "author_count": 1, "authors": ["ashuntu <101582426+ashuntu@users.noreply.github.com>"], "commit_count": 2, "last_touch_date": "2023-07-17", "days_since_last_touch": 1139}, {"file": "src/steamreport", "author_count": 1, "authors": ["Ash <101582426+ashuntu@users.noreply.github.com>"], "commit_count": 21, "last_touch_date": "2023-08-21", "days_since_last_touch": 1104}, {"file": "snap/gui/steam.desktop", "author_count": 1, "authors": ["Ken VanDine <ken.vandine@canonical.com>"], "commit_count": 1, "last_touch_date": "2023-09-01", "days_since_last_touch": 1093}, {"file": "src/nvidia32", "author_count": 1, "authors": ["ashuntu <101582426+ashuntu@users.noreply.github.com, ashton.nelson@canonical.com>"], "commit_count": 14, "last_touch_date": "2024-10-30", "days_since_last_touch": 668}, {"file": ".github/.jira_sync_config.yaml", "author_count": 1, "authors": ["Didier Roche <didier.roche@canonical.com>"], "commit_count": 1, "last_touch_date": "2025-02-11", "days_since_last_touch": 564}, {"file": ".github/ISSUE_TEMPLATE/feature_request.yml", "author_count": 1, "authors": ["ashuntu <101582426+ashuntu@users.noreply.github.com, ashton.nelson@canonical.com>"], "commit_count": 4, "last_touch_date": "2025-10-14", "days_since_last_touch": 319}, {"file": ".github/ISSUE_TEMPLATE/bug_report.yml", "author_count": 1, "authors": ["ashuntu <101582426+ashuntu@users.noreply.github.com, ashton.nelson@canonical.com>"], "commit_count": 7, "last_touch_date": "2026-02-02", "days_since_last_touch": 208}, {"file": "docs/.gitignore", "author_count": 1, "authors": ["shanecrowley <shane.crowley@canonical.com>"], "commit_count": 1, "last_touch_date": "2026-02-16", "days_since_last_touch": 194}, {"file": "docs/Makefile", "author_count": 1, "authors": ["shanecrowley <shane.crowley@canonical.com>"], "commit_count": 1, "last_touch_date": "2026-02-16", "days_since_last_touch": 194}, {"file": "docs/requirements.txt", "author_count": 1, "authors": ["shanecrowley <shane.crowley@canonical.com>"], "commit_count": 1, "last_touch_date": "2026-02-16", "days_since_last_touch": 194}, {"file": "docs/.sphinx/.pre-commit-config.yaml", "author_count": 1, "authors": ["shanecrowley <shane.crowley@canonical.com>"], "commit_count": 1, "last_touch_date": "2026-02-16", "days_since_last_touch": 194}, {"file": "docs/.sphinx/.pymarkdown.json", "author_count": 1, "authors": ["shanecrowley <shane.crowley@canonical.com>"], "commit_count": 1, "last_touch_date": "2026-02-16", "days_since_last_touch": 194}, {"file": "docs/.sphinx/get_vale_conf.py", "author_count": 1, "authors": ["shanecrowley <shane.crowley@canonical.com>"], "commit_count": 1, "last_touch_date": "2026-02-16", "days_since_last_touch": 194}, {"file": "docs/.sphinx/pa11y.json", "author_count": 1, "authors": ["shanecrowley <shane.crowley@canonical.com>"], "commit_count": 1, "last_touch_date": "2026-02-16", "days_since_last_touch": 194}, {"file": "docs/.sphinx/update_sp.py", "author_count": 1, "authors": ["shanecrowley <shane.crowley@canonical.com>"], "commit_count": 1, "last_touch_date": "2026-02-16", "days_since_last_touch": 194}, {"file": "docs/.sphinx/version", "author_count": 1, "authors": ["shanecrowley <shane.crowley@canonical.com>"], "commit_count": 1, "last_touch_date": "2026-02-16", "days_since_last_touch": 194}, {"file": "docs/.sphinx/_static/css/dropdown.css", "author_count": 1, "authors": ["shanecrowley <shane.crowley@canonical.com>"], "commit_count": 1, "last_touch_date": "2026-02-16", "days_since_last_touch": 194}, {"file": "docs/assets/controller.png", "author_count": 1, "authors": ["shanecrowley <shane.crowley@canonical.com>"], "commit_count": 1, "last_touch_date": "2026-02-16", "days_since_last_touch": 194}, {"file": "docs/assets/proton-protondb.png", "author_count": 1, "authors": ["shanecrowley <shane.crowley@canonical.com>"], "commit_count": 1, "last_touch_date": "2026-02-16", "days_since_last_touch": 194}, {"file": "docs/assets/testing-four-boxes.png", "author_count": 1, "authors": ["shanecrowley <shane.crowley@canonical.com>"], "commit_count": 1, "last_touch_date": "2026-02-16", "days_since_last_touch": 194}, {"file": "docs/assets/testing-verified-status.png", "author_count": 1, "authors": ["shanecrowley <shane.crowley@canonical.com>"], "commit_count": 1, "last_touch_date": "2026-02-16", "days_since_last_touch": 194}, {"file": "docs/reuse/links.txt", "author_count": 1, "authors": ["shanecrowley <shane.crowley@canonical.com>"], "commit_count": 1, "last_touch_date": "2026-02-16", "days_since_last_touch": 194}, {"file": "docs/reuse/mermaid.txt", "author_count": 1, "authors": ["shanecrowley <shane.crowley@canonical.com>"], "commit_count": 1, "last_touch_date": "2026-02-16", "days_since_last_touch": 194}, {"file": "docs/reuse/substitutions.txt", "author_count": 1, "authors": ["shanecrowley <shane.crowley@canonical.com>"], "commit_count": 1, "last_touch_date": "2026-02-16", "days_since_last_touch": 194}, {"file": "docs/reuse/substitutions.yaml", "author_count": 1, "authors": ["shanecrowley <shane.crowley@canonical.com>"], "commit_count": 1, "last_touch_date": "2026-02-16", "days_since_last_touch": 194}, {"file": "docs/assets/external-libs.png", "author_count": 1, "authors": ["shanecrowley <shane.crowley@canonical.com>"], "commit_count": 1, "last_touch_date": "2026-03-02", "days_since_last_touch": 180}, {"file": "docs/assets/app-center-dark.webp", "author_count": 1, "authors": ["shanecrowley <shane.crowley@canonical.com>"], "commit_count": 1, "last_touch_date": "2026-04-16", "days_since_last_touch": 135}, {"file": "docs/assets/app-center-light.webp", "author_count": 1, "authors": ["shanecrowley <shane.crowley@canonical.com>"], "commit_count": 1, "last_touch_date": "2026-04-16", "days_since_last_touch": 135}, {"file": "docs/contributing/documentation.md", "author_count": 1, "authors": ["shanecrowley <shane.crowley@canonical.com>"], "commit_count": 1, "last_touch_date": "2026-04-28", "days_since_last_touch": 123}, {"file": "docs/assets/troubleshoot-report-dialog-dark.png", "author_count": 1, "authors": ["shanecrowley <shane.crowley@canonical.com>"], "commit_count": 1, "last_touch_date": "2026-04-29", "days_since_last_touch": 122}, {"file": "docs/assets/troubleshoot-report-dialog-light.png", "author_count": 1, "authors": ["shanecrowley <shane.crowley@canonical.com>"], "commit_count": 1, "last_touch_date": "2026-04-29", "days_since_last_touch": 122}, {"file": "docs/contributing/reports.md", "author_count": 1, "authors": ["shanecrowley <shane.crowley@canonical.com>"], "commit_count": 3, "last_touch_date": "2026-04-29", "days_since_last_touch": 122}, {"file": "docs/.sphinx/_static/css/snap-badge.css", "author_count": 1, "authors": ["shanecrowley <shane.crowley@canonical.com>"], "commit_count": 1, "last_touch_date": "2026-05-27", "days_since_last_touch": 94}, {"file": "docs/.sphinx/_templates/page.html", "author_count": 1, "authors": ["shanecrowley <shane.crowley@canonical.com>"], "commit_count": 1, "last_touch_date": "2026-05-27", "days_since_last_touch": 94}, {"file": "docs/.sphinx/_static/js/overwrite_links.js", "author_count": 1, "authors": ["shanecrowley <shane.crowley@canonical.com>"], "commit_count": 2, "last_touch_date": "2026-07-21", "days_since_last_touch": 39}, {"file": "docs/.sphinx/_templates/footer.html", "author_count": 1, "authors": ["shanecrowley <shane.crowley@canonical.com>"], "commit_count": 1, "last_touch_date": "2026-07-21", "days_since_last_touch": 39}, {"file": "docs/.sphinx/_templates/header.html", "author_count": 1, "authors": ["shanecrowley <shane.crowley@canonical.com>"], "commit_count": 1, "last_touch_date": "2026-07-21", "days_since_last_touch": 39}, {"file": "src/steam-snap.sh", "author_count": 2, "authors": ["Ken VanDine <ken@vandine.org>", "Jesús Soto <jesus.soto@canonical.com>"], "commit_count": 3, "last_touch_date": "2023-02-28", "days_since_last_touch": 1278}, {"file": "tests/vulkan", "author_count": 2, "authors": ["ashuntu <ashton.nelson@canonical.com>", "Ken VanDine <ken.vandine@canonical.com, ken@vandine.org>"], "commit_count": 5, "last_touch_date": "2023-06-05", "days_since_last_touch": 1181}, {"file": "snap/hooks/configure", "author_count": 2, "authors": ["ashuntu <101582426+ashuntu@users.noreply.github.com>", "Sergio Costas Rodriguez <sergio.costas@canonical.com>"], "commit_count": 6, "last_touch_date": "2024-01-08", "days_since_last_touch": 964}, {"file": ".gitignore", "author_count": 2, "authors": ["ashuntu <ashton.nelson@canonical.com>", "Ken VanDine <ken@vandine.org>"], "commit_count": 2, "last_touch_date": "2025-10-14", "days_since_last_touch": 319}, {"file": "docs/.custom_wordlist.txt", "author_count": 2, "authors": ["andreia <andreia.velasco@canonical.com>", "shanecrowley <shane.crowley@canonical.com>"], "commit_count": 3, "last_touch_date": "2026-04-27", "days_since_last_touch": 124}, {"file": "docs/explanation/index.md", "author_count": 2, "authors": ["andreia <andreia.velasco@canonical.com>", "shanecrowley <shane.crowley@canonical.com>"], "commit_count": 2, "last_touch_date": "2026-04-27", "days_since_last_touch": 124}, {"file": "docs/explanation/snap-versus-deb.md", "author_count": 2, "authors": ["andreia <andreia.velasco@canonical.com>", "shanecrowley <shane.crowley@canonical.com>"], "commit_count": 10, "last_touch_date": "2026-04-27", "days_since_last_touch": 124}, {"file": "docs/howto/dedicated-gpu.md", "author_count": 2, "authors": ["andreia <andreia.velasco@canonical.com>", "shanecrowley <shane.crowley@canonical.com>"], "commit_count": 6, "last_touch_date": "2026-04-27", "days_since_last_touch": 124}, {"file": "docs/howto/set-up-controller.md", "author_count": 2, "authors": ["andreia <andreia.velasco@canonical.com>", "shanecrowley <shane.crowley@canonical.com>"], "commit_count": 3, "last_touch_date": "2026-04-27", "days_since_last_touch": 124}, {"file": "docs/howto/update-version.md", "author_count": 2, "authors": ["andreia <andreia.velasco@canonical.com>", "shanecrowley <shane.crowley@canonical.com>"], "commit_count": 6, "last_touch_date": "2026-04-27", "days_since_last_touch": 124}, {"file": "docs/howto/troubleshooting/game-workarounds.md", "author_count": 2, "authors": ["andreia <andreia.velasco@canonical.com>", "shanecrowley <shane.crowley@canonical.com>"], "commit_count": 4, "last_touch_date": "2026-04-27", "days_since_last_touch": 124}, {"file": "docs/reference/external-libraries.md", "author_count": 2, "authors": ["andreia <andreia.velasco@canonical.com>", "shanecrowley <shane.crowley@canonical.com>"], "commit_count": 4, "last_touch_date": "2026-04-27", "days_since_last_touch": 124}, {"file": "docs/reference/glossary.md", "author_count": 2, "authors": ["andreia <andreia.velasco@canonical.com>", "shanecrowley <shane.crowley@canonical.com>"], "commit_count": 3, "last_touch_date": "2026-04-27", "days_since_last_touch": 124}, {"file": "docs/contributing/development.md", "author_count": 2, "authors": ["andreia <andreia.velasco@canonical.com>", "shanecrowley <shane.crowley@canonical.com>"], "commit_count": 10, "last_touch_date": "2026-04-28", "days_since_last_touch": 123}, {"file": "docs/howto/index.md", "author_count": 2, "authors": ["andreia <andreia.velasco@canonical.com>", "shanecrowley <shane.crowley@canonical.com>"], "commit_count": 6, "last_touch_date": "2026-04-28", "days_since_last_touch": 123}, {"file": "docs/explanation/what-games-can-i-play.md", "author_count": 2, "authors": ["andreia <andreia.velasco@canonical.com>", "shanecrowley <shane.crowley@canonical.com>"], "commit_count": 6, "last_touch_date": "2026-04-29", "days_since_last_touch": 122}, {"file": "docs/howto/configure-proton.md", "author_count": 2, "authors": ["andreia <andreia.velasco@canonical.com>", "shanecrowley <shane.crowley@canonical.com>"], "commit_count": 6, "last_touch_date": "2026-04-29", "days_since_last_touch": 122}, {"file": "docs/howto/install.md", "author_count": 2, "authors": ["andreia <andreia.velasco@canonical.com>", "shanecrowley <shane.crowley@canonical.com>"], "commit_count": 11, "last_touch_date": "2026-04-29", "days_since_last_touch": 122}, {"file": "docs/howto/troubleshooting/index.md", "author_count": 2, "authors": ["andreia <andreia.velasco@canonical.com>", "shanecrowley <shane.crowley@canonical.com>"], "commit_count": 10, "last_touch_date": "2026-04-29", "days_since_last_touch": 122}, {"file": "docs/.readthedocs.yaml", "author_count": 2, "authors": ["andreia <andreia.velasco@canonical.com>", "shanecrowley <shane.crowley@canonical.com>"], "commit_count": 3, "last_touch_date": "2026-05-26", "days_since_last_touch": 95}, {"file": "docs/index.md", "author_count": 2, "authors": ["andreia <andreia.velasco@canonical.com>", "shanecrowley <shane.crowley@canonical.com>"], "commit_count": 16, "last_touch_date": "2026-05-27", "days_since_last_touch": 94}, {"file": "docs/howto/change-mesa-graphics.md", "author_count": 2, "authors": ["andreia <andreia.velasco@canonical.com>", "shanecrowley <shane.crowley@canonical.com>"], "commit_count": 6, "last_touch_date": "2026-05-28", "days_since_last_touch": 93}, {"file": "docs/conf.py", "author_count": 2, "authors": ["andreia <andreia.velasco@canonical.com>", "shanecrowley <shane.crowley@canonical.com>"], "commit_count": 12, "last_touch_date": "2026-07-22", "days_since_last_touch": 38}, {"file": "src/vulkaninfo", "author_count": 3, "authors": ["Zoe Spellman <zoe.spellman@canonical.com>", "ashuntu <ashton.nelson@canonical.com>", "Ken VanDine <ken.vandine@canonical.com, ken@vandine.org>"], "commit_count": 5, "last_touch_date": "2023-06-05", "days_since_last_touch": 1181}, {"file": "docs/howto/configure-mangohud.md", "author_count": 3, "authors": ["andreia <andreia.velasco@canonical.com>", "ashuntu <ashton.nelson@canonical.com>", "shanecrowley <shane.crowley@canonical.com>"], "commit_count": 10, "last_touch_date": "2026-06-03", "days_since_last_touch": 87}, {"file": "docs/reference/index.md", "author_count": 3, "authors": ["andreia <andreia.velasco@canonical.com>", "ashuntu <ashton.nelson@canonical.com>", "shanecrowley <shane.crowley@canonical.com>"], "commit_count": 4, "last_touch_date": "2026-06-08", "days_since_last_touch": 82}, {"file": ".github/workflows/build-snap.yml", "author_count": 4, "authors": ["andreia <andreia.velasco@canonical.com>", "jssotomdz <105805873+jssotomdz@users.noreply.github.com>", "James Henstridge <james@jamesh.id.au>", "ashuntu <ashton.nelson@canonical.com>"], "commit_count": 5, "last_touch_date": "2026-04-10", "days_since_last_touch": 141}, {"file": "README.md", "author_count": 6, "authors": ["Ken VanDine <ken.vandine@canonical.com>", "James Henstridge <james@jamesh.id.au>", "Alberto Contreras <alberto.contreras@canonical.com>", "shanecrowley <shane.crowley@canonical.com>", "Ash <101582426+ashuntu@users.noreply.github.com>", "Shane Crowley <66971213+edibotopic@users.noreply.github.com>"], "commit_count": 11, "last_touch_date": "2026-05-27", "days_since_last_touch": 94}, {"file": "src/desktop-launch", "author_count": 7, "authors": ["Zoe Spellman <zoe.spellman@canonical.com>", "Sergio Costas Rodriguez <sergio.costas@canonical.com>", "Umayr <umayr23@gmail.com>", "Ken VanDine <ken.vandine@canonical.com, ken@vandine.org>", "ashuntu <101582426+ashuntu@users.noreply.github.com, ashton.nelson@canonical.com>", "Kyuyrii <190517858+kyuyrii@users.noreply.github.com>", "fntenjr <203029929+fntenjr@users.noreply.github.com>"], "commit_count": 39, "last_touch_date": "2026-07-09", "days_since_last_touch": 51}, {"file": "snap/snapcraft.yaml", "author_count": 11, "authors": ["Zoe Spellman <zoe.spellman@canonical.com>", "James Henstridge <james@jamesh.id.au>", "Jesús Soto <jesus.soto@canonical.com>", "Sergio Costas Rodriguez <sergio.costas@canonical.com>", "soredake <5204968+soredake@users.noreply.github.com>", "Ken VanDine <ken.vandine@canonical.com, ken@vandine.org>", "ashuntu <101582426+ashuntu@users.noreply.github.com, ashton.nelson@canonical.com>", "Denis Moskal <denis.moskal@gmail.com>", "Kyuyrii <kyuyriibyakko@gmail.com>", "jssotomdz <105805873+jssotomdz@users.noreply.github.com>", "fntenjr <203029929+fntenjr@users.noreply.github.com>"], "commit_count": 171, "last_touch_date": "2026-08-27", "days_since_last_touch": 2}]}, "complexity": {"agent": "complexity_agent", "repo": "/Users/zohairmoosavi/ibm-hackathon/knowledge-handoff-4/sample-repos/steam-snap", "file_count_analyzed": 64, "files": [{"file": "snap/snapcraft.yaml", "complexity_score": 100.0, "metrics": {"nloc": 622, "function_count": 0, "avg_cyclomatic_complexity": null, "max_cyclomatic_complexity": null}}, {"file": "src/steamreport", "complexity_score": 75.88, "metrics": {"nloc": 472, "function_count": 0, "avg_cyclomatic_complexity": null, "max_cyclomatic_complexity": null}}, {"file": "src/desktop-launch", "complexity_score": 67.85, "metrics": {"nloc": 422, "function_count": 0, "avg_cyclomatic_complexity": null, "max_cyclomatic_complexity": null}}, {"file": "docs/reuse/mermaid.txt", "complexity_score": 50.32, "metrics": {"nloc": 313, "function_count": 0, "avg_cyclomatic_complexity": null, "max_cyclomatic_complexity": null}}, {"file": "snap/gui/steam.desktop", "complexity_score": 45.98, "metrics": {"nloc": 286, "function_count": 0, "avg_cyclomatic_complexity": null, "max_cyclomatic_complexity": null}}, {"file": "docs/.sphinx/update_sp.py", "complexity_score": 42.12, "metrics": {"nloc": 202, "function_count": 6, "avg_cyclomatic_complexity": 6, "max_cyclomatic_complexity": 16}}, {"file": "docs/howto/troubleshooting/index.md", "complexity_score": 29.26, "metrics": {"nloc": 182, "function_count": 0, "avg_cyclomatic_complexity": null, "max_cyclomatic_complexity": null}}, {"file": "docs/Makefile", "complexity_score": 27.81, "metrics": {"nloc": 173, "function_count": 0, "avg_cyclomatic_complexity": null, "max_cyclomatic_complexity": null}}, {"file": "src/nvidia32", "complexity_score": 27.49, "metrics": {"nloc": 171, "function_count": 0, "avg_cyclomatic_complexity": null, "max_cyclomatic_complexity": null}}, {"file": "docs/contributing/development.md", "complexity_score": 25.72, "metrics": {"nloc": 160, "function_count": 0, "avg_cyclomatic_complexity": null, "max_cyclomatic_complexity": null}}, {"file": "docs/.sphinx/get_vale_conf.py", "complexity_score": 21.46, "metrics": {"nloc": 91, "function_count": 4, "avg_cyclomatic_complexity": 4.25, "max_cyclomatic_complexity": 7}}, {"file": "docs/howto/troubleshooting/game-workarounds.md", "complexity_score": 17.36, "metrics": {"nloc": 108, "function_count": 0, "avg_cyclomatic_complexity": null, "max_cyclomatic_complexity": null}}, {"file": "docs/contributing/documentation.md", "complexity_score": 16.72, "metrics": {"nloc": 104, "function_count": 0, "avg_cyclomatic_complexity": null, "max_cyclomatic_complexity": null}}, {"file": "docs/.sphinx/_templates/footer.html", "complexity_score": 16.56, "metrics": {"nloc": 103, "function_count": 0, "avg_cyclomatic_complexity": null, "max_cyclomatic_complexity": null}}, {"file": ".github/ISSUE_TEMPLATE/bug_report.yml", "complexity_score": 16.08, "metrics": {"nloc": 100, "function_count": 0, "avg_cyclomatic_complexity": null, "max_cyclomatic_complexity": null}}, {"file": "docs/contributing/reports.md", "complexity_score": 15.59, "metrics": {"nloc": 97, "function_count": 0, "avg_cyclomatic_complexity": null, "max_cyclomatic_complexity": null}}, {"file": "docs/howto/install.md", "complexity_score": 15.43, "metrics": {"nloc": 96, "function_count": 0, "avg_cyclomatic_complexity": null, "max_cyclomatic_complexity": null}}, {"file": "docs/conf.py", "complexity_score": 14.63, "metrics": {"nloc": 91, "function_count": 0, "avg_cyclomatic_complexity": null, "max_cyclomatic_complexity": null}}, {"file": "docs/.custom_wordlist.txt", "complexity_score": 12.54, "metrics": {"nloc": 78, "function_count": 0, "avg_cyclomatic_complexity": null, "max_cyclomatic_complexity": null}}, {"file": "docs/.sphinx/_templates/header.html", "complexity_score": 11.58, "metrics": {"nloc": 72, "function_count": 0, "avg_cyclomatic_complexity": null, "max_cyclomatic_complexity": null}}, {"file": "docs/explanation/snap-versus-deb.md", "complexity_score": 11.25, "metrics": {"nloc": 70, "function_count": 0, "avg_cyclomatic_complexity": null, "max_cyclomatic_complexity": null}}, {"file": "docs/howto/configure-mangohud.md", "complexity_score": 10.45, "metrics": {"nloc": 65, "function_count": 0, "avg_cyclomatic_complexity": null, "max_cyclomatic_complexity": null}}, {"file": "docs/howto/configure-proton.md", "complexity_score": 10.29, "metrics": {"nloc": 64, "function_count": 0, "avg_cyclomatic_complexity": null, "max_cyclomatic_complexity": null}}, {"file": "docs/index.md", "complexity_score": 9.81, "metrics": {"nloc": 61, "function_count": 0, "avg_cyclomatic_complexity": null, "max_cyclomatic_complexity": null}}, {"file": "docs/.sphinx/_templates/page.html", "complexity_score": 9.81, "metrics": {"nloc": 61, "function_count": 0, "avg_cyclomatic_complexity": null, "max_cyclomatic_complexity": null}}, {"file": "docs/howto/dedicated-gpu.md", "complexity_score": 8.84, "metrics": {"nloc": 55, "function_count": 0, "avg_cyclomatic_complexity": null, "max_cyclomatic_complexity": null}}, {"file": "docs/howto/update-version.md", "complexity_score": 8.84, "metrics": {"nloc": 55, "function_count": 0, "avg_cyclomatic_complexity": null, "max_cyclomatic_complexity": null}}, {"file": "docs/.sphinx/_static/js/overwrite_links.js", "complexity_score": 8.15, "metrics": {"nloc": 34, "function_count": 6, "avg_cyclomatic_complexity": 1.6666666666666667, "max_cyclomatic_complexity": 2}}, {"file": "docs/howto/set-up-controller.md", "complexity_score": 7.56, "metrics": {"nloc": 47, "function_count": 0, "avg_cyclomatic_complexity": null, "max_cyclomatic_complexity": null}}, {"file": "docs/.sphinx/.pymarkdown.json", "complexity_score": 7.4, "metrics": {"nloc": 46, "function_count": 0, "avg_cyclomatic_complexity": null, "max_cyclomatic_complexity": null}}, {"file": "docs/reference/glossary.md", "complexity_score": 7.4, "metrics": {"nloc": 46, "function_count": 0, "avg_cyclomatic_complexity": null, "max_cyclomatic_complexity": null}}, {"file": "docs/reuse/links.txt", "complexity_score": 7.4, "metrics": {"nloc": 46, "function_count": 0, "avg_cyclomatic_complexity": null, "max_cyclomatic_complexity": null}}, {"file": "snap/hooks/configure", "complexity_score": 7.23, "metrics": {"nloc": 45, "function_count": 0, "avg_cyclomatic_complexity": null, "max_cyclomatic_complexity": null}}, {"file": "snap/keys/B05498B7.asc", "complexity_score": 6.91, "metrics": {"nloc": 43, "function_count": 0, "avg_cyclomatic_complexity": null, "max_cyclomatic_complexity": null}}, {"file": ".github/ISSUE_TEMPLATE/feature_request.yml", "complexity_score": 6.27, "metrics": {"nloc": 39, "function_count": 0, "avg_cyclomatic_complexity": null, "max_cyclomatic_complexity": null}}, {"file": "docs/.readthedocs.yaml", "complexity_score": 6.27, "metrics": {"nloc": 39, "function_count": 0, "avg_cyclomatic_complexity": null, "max_cyclomatic_complexity": null}}, {"file": "docs/howto/change-mesa-graphics.md", "complexity_score": 5.31, "metrics": {"nloc": 33, "function_count": 0, "avg_cyclomatic_complexity": null, "max_cyclomatic_complexity": null}}, {"file": "docs/requirements.txt", "complexity_score": 5.14, "metrics": {"nloc": 32, "function_count": 0, "avg_cyclomatic_complexity": null, "max_cyclomatic_complexity": null}}, {"file": "docs/explanation/what-games-can-i-play.md", "complexity_score": 4.98, "metrics": {"nloc": 31, "function_count": 0, "avg_cyclomatic_complexity": null, "max_cyclomatic_complexity": null}}, {"file": "README.md", "complexity_score": 4.66, "metrics": {"nloc": 29, "function_count": 0, "avg_cyclomatic_complexity": null, "max_cyclomatic_complexity": null}}, {"file": "docs/.gitignore", "complexity_score": 4.18, "metrics": {"nloc": 26, "function_count": 0, "avg_cyclomatic_complexity": null, "max_cyclomatic_complexity": null}}, {"file": "docs/reference/external-libraries.md", "complexity_score": 4.18, "metrics": {"nloc": 26, "function_count": 0, "avg_cyclomatic_complexity": null, "max_cyclomatic_complexity": null}}, {"file": ".github/workflows/build-snap.yml", "complexity_score": 3.7, "metrics": {"nloc": 23, "function_count": 0, "avg_cyclomatic_complexity": null, "max_cyclomatic_complexity": null}}, {"file": "docs/.sphinx/.pre-commit-config.yaml", "complexity_score": 3.7, "metrics": {"nloc": 23, "function_count": 0, "avg_cyclomatic_complexity": null, "max_cyclomatic_complexity": null}}, {"file": "docs/howto/index.md", "complexity_score": 3.54, "metrics": {"nloc": 22, "function_count": 0, "avg_cyclomatic_complexity": null, "max_cyclomatic_complexity": null}}, {"file": "src/steam-snap.sh", "complexity_score": 2.57, "metrics": {"nloc": 16, "function_count": 0, "avg_cyclomatic_complexity": null, "max_cyclomatic_complexity": null}}, {"file": ".github/ISSUE_TEMPLATE/generic_issue.md", "complexity_score": 2.25, "metrics": {"nloc": 14, "function_count": 0, "avg_cyclomatic_complexity": null, "max_cyclomatic_complexity": null}}, {"file": "tests/vulkan", "complexity_score": 2.09, "metrics": {"nloc": 13, "function_count": 0, "avg_cyclomatic_complexity": null, "max_cyclomatic_complexity": null}}, {"file": "docs/explanation/index.md", "complexity_score": 1.93, "metrics": {"nloc": 12, "function_count": 0, "avg_cyclomatic_complexity": null, "max_cyclomatic_complexity": null}}, {"file": "docs/reference/index.md", "complexity_score": 1.93, "metrics": {"nloc": 12, "function_count": 0, "avg_cyclomatic_complexity": null, "max_cyclomatic_complexity": null}}, {"file": ".github/.jira_sync_config.yaml", "complexity_score": 1.45, "metrics": {"nloc": 9, "function_count": 0, "avg_cyclomatic_complexity": null, "max_cyclomatic_complexity": null}}, {"file": "docs/.sphinx/pa11y.json", "complexity_score": 1.45, "metrics": {"nloc": 9, "function_count": 0, "avg_cyclomatic_complexity": null, "max_cyclomatic_complexity": null}}, {"file": ".gitignore", "complexity_score": 1.13, "metrics": {"nloc": 7, "function_count": 0, "avg_cyclomatic_complexity": null, "max_cyclomatic_complexity": null}}, {"file": "docs/.sphinx/_static/css/snap-badge.css", "complexity_score": 1.13, "metrics": {"nloc": 7, "function_count": 0, "avg_cyclomatic_complexity": null, "max_cyclomatic_complexity": null}}, {"file": "docs/reuse/substitutions.txt", "complexity_score": 1.13, "metrics": {"nloc": 7, "function_count": 0, "avg_cyclomatic_complexity": null, "max_cyclomatic_complexity": null}}, {"file": "docs/reuse/substitutions.yaml", "complexity_score": 0.64, "metrics": {"nloc": 4, "function_count": 0, "avg_cyclomatic_complexity": null, "max_cyclomatic_complexity": null}}, {"file": "src/glxgears", "complexity_score": 0.64, "metrics": {"nloc": 4, "function_count": 0, "avg_cyclomatic_complexity": null, "max_cyclomatic_complexity": null}}, {"file": "src/glxinfo", "complexity_score": 0.64, "metrics": {"nloc": 4, "function_count": 0, "avg_cyclomatic_complexity": null, "max_cyclomatic_complexity": null}}, {"file": "src/vkcube", "complexity_score": 0.64, "metrics": {"nloc": 4, "function_count": 0, "avg_cyclomatic_complexity": null, "max_cyclomatic_complexity": null}}, {"file": "src/vulkaninfo", "complexity_score": 0.64, "metrics": {"nloc": 4, "function_count": 0, "avg_cyclomatic_complexity": null, "max_cyclomatic_complexity": null}}, {"file": "tests/glx", "complexity_score": 0.64, "metrics": {"nloc": 4, "function_count": 0, "avg_cyclomatic_complexity": null, "max_cyclomatic_complexity": null}}, {"file": "tests/run.sh", "complexity_score": 0.64, "metrics": {"nloc": 4, "function_count": 0, "avg_cyclomatic_complexity": null, "max_cyclomatic_complexity": null}}, {"file": "docs/.sphinx/_static/css/dropdown.css", "complexity_score": 0.48, "metrics": {"nloc": 3, "function_count": 0, "avg_cyclomatic_complexity": null, "max_cyclomatic_complexity": null}}, {"file": "docs/.sphinx/version", "complexity_score": 0.16, "metrics": {"nloc": 1, "function_count": 0, "avg_cyclomatic_complexity": null, "max_cyclomatic_complexity": null}}]}, "documentation": {"agent": "documentation_gap_agent", "repo": "/Users/zohairmoosavi/ibm-hackathon/knowledge-handoff-4/sample-repos/steam-snap", "file_count_analyzed": 52, "files": [{"file": ".github/.jira_sync_config.yaml", "documentation_score": 18, "metrics": {"comment_count": 0, "docstring_count": 0, "has_file_description": false, "has_external_documentation": false}, "reason": "no leading comment block; 0 meaningful inline comments across 9 lines; not referenced in external documentation."}, {"file": ".github/ISSUE_TEMPLATE/bug_report.yml", "documentation_score": 18, "metrics": {"comment_count": 0, "docstring_count": 0, "has_file_description": false, "has_external_documentation": false}, "reason": "no leading comment block; 0 meaningful inline comments across 100 lines; not referenced in external documentation."}, {"file": ".github/ISSUE_TEMPLATE/feature_request.yml", "documentation_score": 18, "metrics": {"comment_count": 0, "docstring_count": 0, "has_file_description": false, "has_external_documentation": false}, "reason": "no leading comment block; 0 meaningful inline comments across 39 lines; not referenced in external documentation."}, {"file": ".github/workflows/build-snap.yml", "documentation_score": 18, "metrics": {"comment_count": 0, "docstring_count": 0, "has_file_description": false, "has_external_documentation": false}, "reason": "no leading comment block; 0 meaningful inline comments across 23 lines; not referenced in external documentation."}, {"file": "docs/.sphinx/.pymarkdown.json", "documentation_score": 18, "metrics": {"comment_count": 0, "docstring_count": 0, "has_file_description": false, "has_external_documentation": false}, "reason": "no file-level comment header; 0 meaningful inline comments; not directly referenced in external docs."}, {"file": "src/nvidia32", "documentation_score": 23, "metrics": {"comment_count": 6, "docstring_count": 0, "has_file_description": false, "has_external_documentation": false}, "reason": "no file-level comment header; 6 meaningful inline comments; not directly referenced in external docs."}, {"file": "docs/reuse/substitutions.yaml", "documentation_score": 28, "metrics": {"comment_count": 1, "docstring_count": 0, "has_file_description": false, "has_external_documentation": false}, "reason": "no leading comment block; 1 meaningful inline comments across 4 lines; not referenced in external documentation."}, {"file": "src/vkcube", "documentation_score": 30, "metrics": {"comment_count": 0, "docstring_count": 0, "has_file_description": false, "has_external_documentation": false}, "reason": "trivial wrapper script (<=4 code lines; minimal documentation expected); no file-level comment header; 0 meaningful inline comments; not directly referenced in external docs."}, {"file": "src/vulkaninfo", "documentation_score": 30, "metrics": {"comment_count": 0, "docstring_count": 0, "has_file_description": false, "has_external_documentation": false}, "reason": "trivial wrapper script (<=4 code lines; minimal documentation expected); no file-level comment header; 0 meaningful inline comments; not directly referenced in external docs."}, {"file": "tests/glx", "documentation_score": 30, "metrics": {"comment_count": 0, "docstring_count": 0, "has_file_description": false, "has_external_documentation": false}, "reason": "trivial wrapper script (<=4 code lines; minimal documentation expected); no file-level comment header; 0 meaningful inline comments; not directly referenced in external docs."}, {"file": "tests/run.sh", "documentation_score": 30, "metrics": {"comment_count": 0, "docstring_count": 0, "has_file_description": false, "has_external_documentation": false}, "reason": "trivial wrapper script (<=4 code lines; minimal documentation expected); no file-level comment header; 0 meaningful inline comments; not directly referenced in external docs."}, {"file": "docs/.sphinx/get_vale_conf.py", "documentation_score": 34, "metrics": {"comment_count": 14, "docstring_count": 2, "has_file_description": false, "has_external_documentation": false}, "reason": "no module-level docstring; 2/4 functions/classes have docstrings; 14 meaningful inline comments; not referenced in external documentation."}, {"file": "docs/.sphinx/pa11y.json", "documentation_score": 38, "metrics": {"comment_count": 0, "docstring_count": 0, "has_file_description": false, "has_external_documentation": true}, "reason": "no file-level comment header; 0 meaningful inline comments; referenced in external documentation."}, {"file": "src/glxgears", "documentation_score": 38, "metrics": {"comment_count": 0, "docstring_count": 0, "has_file_description": false, "has_external_documentation": true}, "reason": "trivial wrapper script (<=4 code lines; minimal documentation expected); no file-level comment header; 0 meaningful inline comments; referenced in external documentation."}, {"file": "src/glxinfo", "documentation_score": 38, "metrics": {"comment_count": 0, "docstring_count": 0, "has_file_description": false, "has_external_documentation": true}, "reason": "trivial wrapper script (<=4 code lines; minimal documentation expected); no file-level comment header; 0 meaningful inline comments; referenced in external documentation."}, {"file": "src/steamreport", "documentation_score": 40, "metrics": {"comment_count": 9, "docstring_count": 0, "has_file_description": false, "has_external_documentation": true}, "reason": "no file-level comment header; 9 meaningful inline comments; referenced in external documentation."}, {"file": "docs/.sphinx/update_sp.py", "documentation_score": 41, "metrics": {"comment_count": 27, "docstring_count": 5, "has_file_description": false, "has_external_documentation": false}, "reason": "no module-level docstring; 5/6 functions/classes have docstrings; 27 meaningful inline comments; not referenced in external documentation."}, {"file": "snap/snapcraft.yaml", "documentation_score": 42, "metrics": {"comment_count": 12, "docstring_count": 0, "has_file_description": false, "has_external_documentation": true}, "reason": "no leading comment block; 12 meaningful inline comments across 622 lines; referenced in external documentation."}, {"file": "src/desktop-launch", "documentation_score": 48, "metrics": {"comment_count": 91, "docstring_count": 2, "has_file_description": true, "has_external_documentation": false}, "reason": "has file-level comment header; 2/8 shell functions preceded by a comment; 91 meaningful inline comments; not directly referenced in external docs."}, {"file": "src/steam-snap.sh", "documentation_score": 48, "metrics": {"comment_count": 2, "docstring_count": 0, "has_file_description": true, "has_external_documentation": false}, "reason": "has file-level comment header; 2 meaningful inline comments; not directly referenced in external docs."}, {"file": "docs/reuse/substitutions.txt", "documentation_score": 50, "metrics": {"comment_count": 0, "docstring_count": 0, "has_file_description": false, "has_external_documentation": false}, "reason": "missing document title; 7 total lines, 5 content lines; this file is itself documentation; score reflects its own quality."}, {"file": "docs/.readthedocs.yaml", "documentation_score": 58, "metrics": {"comment_count": 12, "docstring_count": 0, "has_file_description": true, "has_external_documentation": false}, "reason": "has leading comment block; 12 meaningful inline comments across 39 lines; not referenced in external documentation."}, {"file": "docs/Makefile", "documentation_score": 60, "metrics": {"comment_count": 9, "docstring_count": 0, "has_file_description": true, "has_external_documentation": true}, "reason": "has file-level comment header; 9 meaningful inline comments; referenced in external documentation."}, {"file": "docs/conf.py", "documentation_score": 61, "metrics": {"comment_count": 141, "docstring_count": 0, "has_file_description": false, "has_external_documentation": true}, "reason": "no module-level docstring; 141 meaningful inline comments; referenced in external documentation."}, {"file": "docs/reuse/mermaid.txt", "documentation_score": 66, "metrics": {"comment_count": 0, "docstring_count": 0, "has_file_description": false, "has_external_documentation": false}, "reason": "missing document title; 313 total lines, 245 content lines; this file is itself documentation; score reflects its own quality."}, {"file": "snap/hooks/configure", "documentation_score": 66, "metrics": {"comment_count": 4, "docstring_count": 0, "has_file_description": true, "has_external_documentation": true}, "reason": "has file-level comment header; 4 meaningful inline comments; referenced in external documentation."}, {"file": ".github/ISSUE_TEMPLATE/generic_issue.md", "documentation_score": 67, "metrics": {"comment_count": 0, "docstring_count": 0, "has_file_description": false, "has_external_documentation": false}, "reason": "missing document title; 14 total lines, 12 content lines; this file is itself documentation; score reflects its own quality."}, {"file": "tests/vulkan", "documentation_score": 68, "metrics": {"comment_count": 2, "docstring_count": 0, "has_file_description": true, "has_external_documentation": true}, "reason": "has file-level comment header; 2 meaningful inline comments; referenced in external documentation."}, {"file": "docs/reuse/links.txt", "documentation_score": 69, "metrics": {"comment_count": 0, "docstring_count": 0, "has_file_description": false, "has_external_documentation": true}, "reason": "missing document title; 46 total lines, 44 content lines; this file is itself documentation; score reflects its own quality."}, {"file": "snap/gui/steam.desktop", "documentation_score": 75, "metrics": {"comment_count": 0, "docstring_count": 0, "has_file_description": true, "has_external_documentation": true}, "reason": "has Name and Comment fields; referenced in external documentation."}, {"file": "docs/explanation/index.md", "documentation_score": 80, "metrics": {"comment_count": 0, "docstring_count": 0, "has_file_description": true, "has_external_documentation": false}, "reason": "has document title/header; 12 total lines, 8 content lines; this file is itself documentation; score reflects its own quality."}, {"file": "docs/reference/index.md", "documentation_score": 80, "metrics": {"comment_count": 0, "docstring_count": 0, "has_file_description": true, "has_external_documentation": false}, "reason": "has document title/header; 12 total lines, 8 content lines; this file is itself documentation; score reflects its own quality."}, {"file": "README.md", "documentation_score": 92, "metrics": {"comment_count": 0, "docstring_count": 0, "has_file_description": true, "has_external_documentation": true}, "reason": "has document title/header; 29 total lines, 14 content lines; this file is itself documentation; score reflects its own quality."}, {"file": "docs/explanation/snap-versus-deb.md", "documentation_score": 92, "metrics": {"comment_count": 0, "docstring_count": 0, "has_file_description": true, "has_external_documentation": true}, "reason": "has document title/header; 70 total lines, 36 content lines; this file is itself documentation; score reflects its own quality."}, {"file": "docs/howto/configure-proton.md", "documentation_score": 93, "metrics": {"comment_count": 0, "docstring_count": 0, "has_file_description": true, "has_external_documentation": true}, "reason": "has document title/header; 64 total lines, 36 content lines; this file is itself documentation; score reflects its own quality."}, {"file": "docs/howto/dedicated-gpu.md", "documentation_score": 93, "metrics": {"comment_count": 0, "docstring_count": 0, "has_file_description": true, "has_external_documentation": true}, "reason": "has document title/header; 55 total lines, 30 content lines; this file is itself documentation; score reflects its own quality."}, {"file": "docs/howto/set-up-controller.md", "documentation_score": 93, "metrics": {"comment_count": 0, "docstring_count": 0, "has_file_description": true, "has_external_documentation": true}, "reason": "has document title/header; 47 total lines, 26 content lines; this file is itself documentation; score reflects its own quality."}, {"file": "docs/howto/troubleshooting/index.md", "documentation_score": 93, "metrics": {"comment_count": 0, "docstring_count": 0, "has_file_description": true, "has_external_documentation": false}, "reason": "has document title/header; 182 total lines, 102 content lines; this file is itself documentation; score reflects its own quality."}, {"file": "docs/contributing/documentation.md", "documentation_score": 94, "metrics": {"comment_count": 0, "docstring_count": 0, "has_file_description": true, "has_external_documentation": true}, "reason": "has document title/header; 104 total lines, 64 content lines; this file is itself documentation; score reflects its own quality."}, {"file": "docs/contributing/reports.md", "documentation_score": 94, "metrics": {"comment_count": 0, "docstring_count": 0, "has_file_description": true, "has_external_documentation": true}, "reason": "has document title/header; 97 total lines, 64 content lines; this file is itself documentation; score reflects its own quality."}, {"file": "docs/explanation/what-games-can-i-play.md", "documentation_score": 94, "metrics": {"comment_count": 0, "docstring_count": 0, "has_file_description": true, "has_external_documentation": true}, "reason": "has document title/header; 31 total lines, 20 content lines; this file is itself documentation; score reflects its own quality."}, {"file": "docs/howto/configure-mangohud.md", "documentation_score": 94, "metrics": {"comment_count": 0, "docstring_count": 0, "has_file_description": true, "has_external_documentation": true}, "reason": "has document title/header; 65 total lines, 39 content lines; this file is itself documentation; score reflects its own quality."}, {"file": "docs/howto/install.md", "documentation_score": 94, "metrics": {"comment_count": 0, "docstring_count": 0, "has_file_description": true, "has_external_documentation": true}, "reason": "has document title/header; 96 total lines, 63 content lines; this file is itself documentation; score reflects its own quality."}, {"file": "docs/howto/update-version.md", "documentation_score": 94, "metrics": {"comment_count": 0, "docstring_count": 0, "has_file_description": true, "has_external_documentation": true}, "reason": "has document title/header; 55 total lines, 33 content lines; this file is itself documentation; score reflects its own quality."}, {"file": "docs/contributing/development.md", "documentation_score": 95, "metrics": {"comment_count": 0, "docstring_count": 0, "has_file_description": true, "has_external_documentation": true}, "reason": "has document title/header; 160 total lines, 115 content lines; this file is itself documentation; score reflects its own quality."}, {"file": "docs/howto/change-mesa-graphics.md", "documentation_score": 95, "metrics": {"comment_count": 0, "docstring_count": 0, "has_file_description": true, "has_external_documentation": true}, "reason": "has document title/header; 33 total lines, 24 content lines; this file is itself documentation; score reflects its own quality."}, {"file": "docs/howto/index.md", "documentation_score": 95, "metrics": {"comment_count": 0, "docstring_count": 0, "has_file_description": true, "has_external_documentation": false}, "reason": "has document title/header; 22 total lines, 15 content lines; this file is itself documentation; score reflects its own quality."}, {"file": "docs/howto/troubleshooting/game-workarounds.md", "documentation_score": 95, "metrics": {"comment_count": 0, "docstring_count": 0, "has_file_description": true, "has_external_documentation": true}, "reason": "has document title/header; 108 total lines, 75 content lines; this file is itself documentation; score reflects its own quality."}, {"file": "docs/index.md", "documentation_score": 95, "metrics": {"comment_count": 0, "docstring_count": 0, "has_file_description": true, "has_external_documentation": false}, "reason": "has document title/header; 61 total lines, 41 content lines; this file is itself documentation; score reflects its own quality."}, {"file": "docs/reference/external-libraries.md", "documentation_score": 95, "metrics": {"comment_count": 0, "docstring_count": 0, "has_file_description": true, "has_external_documentation": true}, "reason": "has document title/header; 26 total lines, 18 content lines; this file is itself documentation; score reflects its own quality."}, {"file": "docs/reference/glossary.md", "documentation_score": 95, "metrics": {"comment_count": 0, "docstring_count": 0, "has_file_description": true, "has_external_documentation": true}, "reason": "has document title/header; 46 total lines, 31 content lines; this file is itself documentation; score reflects its own quality."}, {"file": "docs/.custom_wordlist.txt", "documentation_score": 99, "metrics": {"comment_count": 0, "docstring_count": 0, "has_file_description": true, "has_external_documentation": false}, "reason": "has document title/header; 78 total lines, 77 content lines; this file is itself documentation; score reflects its own quality."}]}, "risk": [{"file": "docs/.sphinx/_static/js/overwrite_links.js", "author_count": 1, "last_touch_days_ago": 39, "complexity_score": 8.15, "doc_score": 0, "risk_level": "HIGH", "why": "1 contributor, last touched 39 days ago, zero comments (doc score 0.0/100)."}, {"file": "docs/.sphinx/_templates/footer.html", "author_count": 1, "last_touch_days_ago": 39, "complexity_score": 16.56, "doc_score": 0, "risk_level": "HIGH", "why": "1 contributor, last touched 39 days ago, zero comments (doc score 0.0/100)."}, {"file": "docs/.sphinx/_templates/header.html", "author_count": 1, "last_touch_days_ago": 39, "complexity_score": 11.58, "doc_score": 0, "risk_level": "HIGH", "why": "1 contributor, last touched 39 days ago, zero comments (doc score 0.0/100)."}, {"file": "docs/.sphinx/_templates/page.html", "author_count": 1, "last_touch_days_ago": 94, "complexity_score": 9.81, "doc_score": 0, "risk_level": "HIGH", "why": "1 contributor, last touched 94 days ago, zero comments (doc score 0.0/100)."}, {"file": ".github/ISSUE_TEMPLATE/bug_report.yml", "author_count": 1, "last_touch_days_ago": 208, "complexity_score": 16.08, "doc_score": 18, "risk_level": "HIGH", "why": "1 contributor, last touched 208 days ago, doc score 18.0/100."}, {"file": "docs/.sphinx/.pymarkdown.json", "author_count": 1, "last_touch_days_ago": 194, "complexity_score": 7.4, "doc_score": 18, "risk_level": "HIGH", "why": "1 contributor, last touched 194 days ago, doc score 18.0/100."}, {"file": "src/nvidia32", "author_count": 1, "last_touch_days_ago": 668, "complexity_score": 27.49, "doc_score": 23, "risk_level": "HIGH", "why": "1 contributor, last touched 668 days ago, doc score 23.0/100."}, {"file": "docs/.sphinx/get_vale_conf.py", "author_count": 1, "last_touch_days_ago": 194, "complexity_score": 21.46, "doc_score": 34, "risk_level": "HIGH", "why": "1 contributor, last touched 194 days ago, doc score 34.0/100."}, {"file": ".gitignore", "author_count": 2, "last_touch_days_ago": 319, "complexity_score": 1.13, "doc_score": 0, "risk_level": "MEDIUM", "why": "2 contributors, last touched 319 days ago, zero comments (doc score 0.0/100)."}, {"file": "docs/.gitignore", "author_count": 1, "last_touch_days_ago": 194, "complexity_score": 4.18, "doc_score": 0, "risk_level": "MEDIUM", "why": "1 contributor, last touched 194 days ago, zero comments (doc score 0.0/100)."}, {"file": "docs/.sphinx/.pre-commit-config.yaml", "author_count": 1, "last_touch_days_ago": 194, "complexity_score": 3.7, "doc_score": 0, "risk_level": "MEDIUM", "why": "1 contributor, last touched 194 days ago, zero comments (doc score 0.0/100)."}, {"file": "docs/.sphinx/_static/css/dropdown.css", "author_count": 1, "last_touch_days_ago": 194, "complexity_score": 0.48, "doc_score": 0, "risk_level": "MEDIUM", "why": "1 contributor, last touched 194 days ago, zero comments (doc score 0.0/100)."}, {"file": "docs/.sphinx/_static/css/snap-badge.css", "author_count": 1, "last_touch_days_ago": 94, "complexity_score": 1.13, "doc_score": 0, "risk_level": "MEDIUM", "why": "1 contributor, last touched 94 days ago, zero comments (doc score 0.0/100)."}, {"file": "docs/.sphinx/version", "author_count": 1, "last_touch_days_ago": 194, "complexity_score": 0.16, "doc_score": 0, "risk_level": "MEDIUM", "why": "1 contributor, last touched 194 days ago, zero comments (doc score 0.0/100)."}, {"file": "docs/requirements.txt", "author_count": 1, "last_touch_days_ago": 194, "complexity_score": 5.14, "doc_score": 0, "risk_level": "MEDIUM", "why": "1 contributor, last touched 194 days ago, zero comments (doc score 0.0/100)."}, {"file": "snap/keys/B05498B7.asc", "author_count": 1, "last_touch_days_ago": 1508, "complexity_score": 6.91, "doc_score": 0, "risk_level": "MEDIUM", "why": "1 contributor, last touched 1508 days ago, zero comments (doc score 0.0/100)."}, {"file": ".github/.jira_sync_config.yaml", "author_count": 1, "last_touch_days_ago": 564, "complexity_score": 1.45, "doc_score": 18, "risk_level": "MEDIUM", "why": "1 contributor, last touched 564 days ago, doc score 18.0/100."}, {"file": ".github/ISSUE_TEMPLATE/feature_request.yml", "author_count": 1, "last_touch_days_ago": 319, "complexity_score": 6.27, "doc_score": 18, "risk_level": "MEDIUM", "why": "1 contributor, last touched 319 days ago, doc score 18.0/100."}, {"file": "docs/reuse/substitutions.yaml", "author_count": 1, "last_touch_days_ago": 194, "complexity_score": 0.64, "doc_score": 28, "risk_level": "MEDIUM", "why": "1 contributor, last touched 194 days ago, doc score 28.0/100."}, {"file": "src/vkcube", "author_count": 1, "last_touch_days_ago": 1326, "complexity_score": 0.64, "doc_score": 30, "risk_level": "MEDIUM", "why": "1 contributor, last touched 1326 days ago, doc score 30.0/100."}, {"file": "tests/glx", "author_count": 1, "last_touch_days_ago": 1331, "complexity_score": 0.64, "doc_score": 30, "risk_level": "MEDIUM", "why": "1 contributor, last touched 1331 days ago, doc score 30.0/100."}, {"file": "tests/run.sh", "author_count": 1, "last_touch_days_ago": 1326, "complexity_score": 0.64, "doc_score": 30, "risk_level": "MEDIUM", "why": "1 contributor, last touched 1326 days ago, doc score 30.0/100."}, {"file": "docs/.sphinx/pa11y.json", "author_count": 1, "last_touch_days_ago": 194, "complexity_score": 1.45, "doc_score": 38, "risk_level": "MEDIUM", "why": "1 contributor, last touched 194 days ago, doc score 38.0/100."}, {"file": "src/glxgears", "author_count": 1, "last_touch_days_ago": 1326, "complexity_score": 0.64, "doc_score": 38, "risk_level": "MEDIUM", "why": "1 contributor, last touched 1326 days ago, doc score 38.0/100."}, {"file": "src/glxinfo", "author_count": 1, "last_touch_days_ago": 1326, "complexity_score": 0.64, "doc_score": 38, "risk_level": "MEDIUM", "why": "1 contributor, last touched 1326 days ago, doc score 38.0/100."}, {"file": "src/steamreport", "author_count": 1, "last_touch_days_ago": 1104, "complexity_score": 75.88, "doc_score": 40, "risk_level": "MEDIUM", "why": "1 contributor, last touched 1104 days ago, doc score 40.0/100."}, {"file": "docs/.sphinx/update_sp.py", "author_count": 1, "last_touch_days_ago": 194, "complexity_score": 42.12, "doc_score": 41, "risk_level": "MEDIUM", "why": "1 contributor, last touched 194 days ago, doc score 41.0/100."}, {"file": "docs/Makefile", "author_count": 1, "last_touch_days_ago": 194, "complexity_score": 27.81, "doc_score": 60, "risk_level": "MEDIUM", "why": "1 contributor, last touched 194 days ago, doc score 60.0/100."}, {"file": "docs/conf.py", "author_count": 2, "last_touch_days_ago": 38, "complexity_score": 14.63, "doc_score": 61, "risk_level": "MEDIUM", "why": "2 contributors, last touched 38 days ago, doc score 61.0/100."}, {"file": "docs/reuse/mermaid.txt", "author_count": 1, "last_touch_days_ago": 194, "complexity_score": 50.32, "doc_score": 66, "risk_level": "MEDIUM", "why": "1 contributor, last touched 194 days ago, doc score 66.0/100."}, {"file": "docs/reuse/links.txt", "author_count": 1, "last_touch_days_ago": 194, "complexity_score": 7.4, "doc_score": 69, "risk_level": "MEDIUM", "why": "1 contributor, last touched 194 days ago, doc score 69.0/100."}, {"file": "snap/gui/steam.desktop", "author_count": 1, "last_touch_days_ago": 1093, "complexity_score": 45.98, "doc_score": 75, "risk_level": "MEDIUM", "why": "1 contributor, last touched 1093 days ago, doc score 75.0/100."}, {"file": "docs/explanation/snap-versus-deb.md", "author_count": 2, "last_touch_days_ago": 124, "complexity_score": 11.25, "doc_score": 92, "risk_level": "MEDIUM", "why": "2 contributors, last touched 124 days ago, doc score 92.0/100."}, {"file": "docs/howto/configure-proton.md", "author_count": 2, "last_touch_days_ago": 122, "complexity_score": 10.29, "doc_score": 93, "risk_level": "MEDIUM", "why": "2 contributors, last touched 122 days ago, doc score 93.0/100."}, {"file": "docs/howto/dedicated-gpu.md", "author_count": 2, "last_touch_days_ago": 124, "complexity_score": 8.84, "doc_score": 93, "risk_level": "MEDIUM", "why": "2 contributors, last touched 124 days ago, doc score 93.0/100."}, {"file": "docs/howto/set-up-controller.md", "author_count": 2, "last_touch_days_ago": 124, "complexity_score": 7.56, "doc_score": 93, "risk_level": "MEDIUM", "why": "2 contributors, last touched 124 days ago, doc score 93.0/100."}, {"file": "docs/howto/troubleshooting/index.md", "author_count": 2, "last_touch_days_ago": 122, "complexity_score": 29.26, "doc_score": 93, "risk_level": "MEDIUM", "why": "2 contributors, last touched 122 days ago, doc score 93.0/100."}, {"file": "docs/contributing/documentation.md", "author_count": 1, "last_touch_days_ago": 123, "complexity_score": 16.72, "doc_score": 94, "risk_level": "MEDIUM", "why": "1 contributor, last touched 123 days ago, doc score 94.0/100."}, {"file": "docs/contributing/reports.md", "author_count": 1, "last_touch_days_ago": 122, "complexity_score": 15.59, "doc_score": 94, "risk_level": "MEDIUM", "why": "1 contributor, last touched 122 days ago, doc score 94.0/100."}, {"file": "docs/howto/install.md", "author_count": 2, "last_touch_days_ago": 122, "complexity_score": 15.43, "doc_score": 94, "risk_level": "MEDIUM", "why": "2 contributors, last touched 122 days ago, doc score 94.0/100."}, {"file": "docs/howto/update-version.md", "author_count": 2, "last_touch_days_ago": 124, "complexity_score": 8.84, "doc_score": 94, "risk_level": "MEDIUM", "why": "2 contributors, last touched 124 days ago, doc score 94.0/100."}, {"file": "docs/contributing/development.md", "author_count": 2, "last_touch_days_ago": 123, "complexity_score": 25.72, "doc_score": 95, "risk_level": "MEDIUM", "why": "2 contributors, last touched 123 days ago, doc score 95.0/100."}, {"file": "docs/howto/troubleshooting/game-workarounds.md", "author_count": 2, "last_touch_days_ago": 124, "complexity_score": 17.36, "doc_score": 95, "risk_level": "MEDIUM", "why": "2 contributors, last touched 124 days ago, doc score 95.0/100."}, {"file": "docs/index.md", "author_count": 2, "last_touch_days_ago": 94, "complexity_score": 9.81, "doc_score": 95, "risk_level": "MEDIUM", "why": "2 contributors, last touched 94 days ago, doc score 95.0/100."}, {"file": "docs/reference/glossary.md", "author_count": 2, "last_touch_days_ago": 124, "complexity_score": 7.4, "doc_score": 95, "risk_level": "MEDIUM", "why": "2 contributors, last touched 124 days ago, doc score 95.0/100."}, {"file": "docs/.custom_wordlist.txt", "author_count": 2, "last_touch_days_ago": 124, "complexity_score": 12.54, "doc_score": 99, "risk_level": "MEDIUM", "why": "2 contributors, last touched 124 days ago, doc score 99.0/100."}, {"file": ".github/workflows/build-snap.yml", "author_count": 4, "last_touch_days_ago": 141, "complexity_score": 3.7, "doc_score": 18, "risk_level": "LOW", "why": "4 contributors, last touched 141 days ago, doc score 18.0/100."}, {"file": "src/vulkaninfo", "author_count": 3, "last_touch_days_ago": 1181, "complexity_score": 0.64, "doc_score": 30, "risk_level": "LOW", "why": "3 contributors, last touched 1181 days ago, doc score 30.0/100."}, {"file": "snap/snapcraft.yaml", "author_count": 11, "last_touch_days_ago": 2, "complexity_score": 100.0, "doc_score": 42, "risk_level": "LOW", "why": "11 contributors, last touched 2 days ago, doc score 42.0/100."}, {"file": "src/desktop-launch", "author_count": 7, "last_touch_days_ago": 51, "complexity_score": 67.85, "doc_score": 48, "risk_level": "LOW", "why": "7 contributors, last touched 51 days ago, doc score 48.0/100."}, {"file": "src/steam-snap.sh", "author_count": 2, "last_touch_days_ago": 1278, "complexity_score": 2.57, "doc_score": 48, "risk_level": "LOW", "why": "2 contributors, last touched 1278 days ago, doc score 48.0/100."}, {"file": "docs/reuse/substitutions.txt", "author_count": 1, "last_touch_days_ago": 194, "complexity_score": 1.13, "doc_score": 50, "risk_level": "LOW", "why": "1 contributor, last touched 194 days ago, doc score 50.0/100."}, {"file": "docs/.readthedocs.yaml", "author_count": 2, "last_touch_days_ago": 95, "complexity_score": 6.27, "doc_score": 58, "risk_level": "LOW", "why": "2 contributors, last touched 95 days ago, doc score 58.0/100."}, {"file": "snap/hooks/configure", "author_count": 2, "last_touch_days_ago": 964, "complexity_score": 7.23, "doc_score": 66, "risk_level": "LOW", "why": "2 contributors, last touched 964 days ago, doc score 66.0/100."}, {"file": ".github/ISSUE_TEMPLATE/generic_issue.md", "author_count": 1, "last_touch_days_ago": 1139, "complexity_score": 2.25, "doc_score": 67, "risk_level": "LOW", "why": "1 contributor, last touched 1139 days ago, doc score 67.0/100."}, {"file": "tests/vulkan", "author_count": 2, "last_touch_days_ago": 1181, "complexity_score": 2.09, "doc_score": 68, "risk_level": "LOW", "why": "2 contributors, last touched 1181 days ago, doc score 68.0/100."}, {"file": "docs/explanation/index.md", "author_count": 2, "last_touch_days_ago": 124, "complexity_score": 1.93, "doc_score": 80, "risk_level": "LOW", "why": "2 contributors, last touched 124 days ago, doc score 80.0/100."}, {"file": "docs/reference/index.md", "author_count": 3, "last_touch_days_ago": 82, "complexity_score": 1.93, "doc_score": 80, "risk_level": "LOW", "why": "3 contributors, last touched 82 days ago, doc score 80.0/100."}, {"file": "README.md", "author_count": 6, "last_touch_days_ago": 94, "complexity_score": 4.66, "doc_score": 92, "risk_level": "LOW", "why": "6 contributors, last touched 94 days ago, doc score 92.0/100."}, {"file": "docs/explanation/what-games-can-i-play.md", "author_count": 2, "last_touch_days_ago": 122, "complexity_score": 4.98, "doc_score": 94, "risk_level": "LOW", "why": "2 contributors, last touched 122 days ago, doc score 94.0/100."}, {"file": "docs/howto/configure-mangohud.md", "author_count": 3, "last_touch_days_ago": 87, "complexity_score": 10.45, "doc_score": 94, "risk_level": "LOW", "why": "3 contributors, last touched 87 days ago, doc score 94.0/100."}, {"file": "docs/howto/change-mesa-graphics.md", "author_count": 2, "last_touch_days_ago": 93, "complexity_score": 5.31, "doc_score": 95, "risk_level": "LOW", "why": "2 contributors, last touched 93 days ago, doc score 95.0/100."}, {"file": "docs/howto/index.md", "author_count": 2, "last_touch_days_ago": 123, "complexity_score": 3.54, "doc_score": 95, "risk_level": "LOW", "why": "2 contributors, last touched 123 days ago, doc score 95.0/100."}, {"file": "docs/reference/external-libraries.md", "author_count": 2, "last_touch_days_ago": 124, "complexity_score": 4.18, "doc_score": 95, "risk_level": "LOW", "why": "2 contributors, last touched 124 days ago, doc score 95.0/100."}], "onboarding": {"agent": "onboarding_agent", "repo": "/Users/zohairmoosavi/ibm-hackathon/knowledge-handoff-4/sample-repos/steam-snap", "method": "breadth0.5+recency0.3+depth0.2", "high_risk_file_count": 8, "files": [{"file": "docs/.sphinx/_static/js/overwrite_links.js", "risk_level": "HIGH", "dominant_owner": "shanecrowley", "all_owners": ["shanecrowley"], "backups": [{"author": "ashuntu", "readiness_score": 20.58, "bucket": "cold", "direct_commits": 0, "cochanged_files_touched": 2, "neighbor_files_touched": 0, "days_since_last_touch": null, "why": "no direct history — closest active contributor by team leaderboard"}, {"author": "Zoe Spellman", "readiness_score": 0.0, "bucket": "cold", "direct_commits": 0, "cochanged_files_touched": 0, "neighbor_files_touched": 0, "days_since_last_touch": null, "why": "no direct history — closest active contributor by team leaderboard"}, {"author": "Alberto Contreras", "readiness_score": 0.0, "bucket": "cold", "direct_commits": 0, "cochanged_files_touched": 0, "neighbor_files_touched": 0, "days_since_last_touch": null, "why": "no direct history — closest active contributor by team leaderboard"}]}, {"file": "docs/.sphinx/_templates/footer.html", "risk_level": "HIGH", "dominant_owner": "shanecrowley", "all_owners": ["shanecrowley"], "backups": [{"author": "ashuntu", "readiness_score": 20.58, "bucket": "cold", "direct_commits": 0, "cochanged_files_touched": 2, "neighbor_files_touched": 0, "days_since_last_touch": null, "why": "no direct history — closest active contributor by team leaderboard"}, {"author": "Zoe Spellman", "readiness_score": 0.0, "bucket": "cold", "direct_commits": 0, "cochanged_files_touched": 0, "neighbor_files_touched": 0, "days_since_last_touch": null, "why": "no direct history — closest active contributor by team leaderboard"}, {"author": "Alberto Contreras", "readiness_score": 0.0, "bucket": "cold", "direct_commits": 0, "cochanged_files_touched": 0, "neighbor_files_touched": 0, "days_since_last_touch": null, "why": "no direct history — closest active contributor by team leaderboard"}]}, {"file": "docs/.sphinx/_templates/header.html", "risk_level": "HIGH", "dominant_owner": "shanecrowley", "all_owners": ["shanecrowley"], "backups": [{"author": "ashuntu", "readiness_score": 20.58, "bucket": "cold", "direct_commits": 0, "cochanged_files_touched": 2, "neighbor_files_touched": 0, "days_since_last_touch": null, "why": "no direct history — closest active contributor by team leaderboard"}, {"author": "Zoe Spellman", "readiness_score": 0.0, "bucket": "cold", "direct_commits": 0, "cochanged_files_touched": 0, "neighbor_files_touched": 0, "days_since_last_touch": null, "why": "no direct history — closest active contributor by team leaderboard"}, {"author": "Alberto Contreras", "readiness_score": 0.0, "bucket": "cold", "direct_commits": 0, "cochanged_files_touched": 0, "neighbor_files_touched": 0, "days_since_last_touch": null, "why": "no direct history — closest active contributor by team leaderboard"}]}, {"file": "docs/.sphinx/_templates/page.html", "risk_level": "HIGH", "dominant_owner": "shanecrowley", "all_owners": ["shanecrowley"], "backups": [{"author": "ashuntu", "readiness_score": 20.58, "bucket": "cold", "direct_commits": 0, "cochanged_files_touched": 2, "neighbor_files_touched": 0, "days_since_last_touch": null, "why": "no direct history — closest active contributor by team leaderboard"}, {"author": "Zoe Spellman", "readiness_score": 0.0, "bucket": "cold", "direct_commits": 0, "cochanged_files_touched": 0, "neighbor_files_touched": 0, "days_since_last_touch": null, "why": "no direct history — closest active contributor by team leaderboard"}, {"author": "Alberto Contreras", "readiness_score": 0.0, "bucket": "cold", "direct_commits": 0, "cochanged_files_touched": 0, "neighbor_files_touched": 0, "days_since_last_touch": null, "why": "no direct history — closest active contributor by team leaderboard"}]}, {"file": ".github/ISSUE_TEMPLATE/bug_report.yml", "risk_level": "HIGH", "dominant_owner": "ashuntu", "all_owners": ["ashuntu"], "backups": [{"author": "shanecrowley", "readiness_score": 100.0, "bucket": "cold", "direct_commits": 0, "cochanged_files_touched": 6, "neighbor_files_touched": 0, "days_since_last_touch": null, "why": "no direct history — closest active contributor by team leaderboard"}, {"author": "Zoe Spellman", "readiness_score": 0.0, "bucket": "cold", "direct_commits": 0, "cochanged_files_touched": 0, "neighbor_files_touched": 0, "days_since_last_touch": null, "why": "no direct history — closest active contributor by team leaderboard"}, {"author": "Alberto Contreras", "readiness_score": 0.0, "bucket": "cold", "direct_commits": 0, "cochanged_files_touched": 0, "neighbor_files_touched": 0, "days_since_last_touch": null, "why": "no direct history — closest active contributor by team leaderboard"}]}, {"file": "docs/.sphinx/.pymarkdown.json", "risk_level": "HIGH", "dominant_owner": "shanecrowley", "all_owners": ["shanecrowley"], "backups": [{"author": "ashuntu", "readiness_score": 20.58, "bucket": "cold", "direct_commits": 0, "cochanged_files_touched": 2, "neighbor_files_touched": 0, "days_since_last_touch": null, "why": "no direct history — closest active contributor by team leaderboard"}, {"author": "Zoe Spellman", "readiness_score": 0.0, "bucket": "cold", "direct_commits": 0, "cochanged_files_touched": 0, "neighbor_files_touched": 0, "days_since_last_touch": null, "why": "no direct history — closest active contributor by team leaderboard"}, {"author": "Alberto Contreras", "readiness_score": 0.0, "bucket": "cold", "direct_commits": 0, "cochanged_files_touched": 0, "neighbor_files_touched": 0, "days_since_last_touch": null, "why": "no direct history — closest active contributor by team leaderboard"}]}, {"file": "src/nvidia32", "risk_level": "HIGH", "dominant_owner": "ashuntu", "all_owners": ["ashuntu"], "backups": [{"author": "shanecrowley", "readiness_score": 100.0, "bucket": "cold", "direct_commits": 0, "cochanged_files_touched": 6, "neighbor_files_touched": 0, "days_since_last_touch": null, "why": "no direct history — closest active contributor by team leaderboard"}, {"author": "Zoe Spellman", "readiness_score": 0.0, "bucket": "cold", "direct_commits": 0, "cochanged_files_touched": 0, "neighbor_files_touched": 2, "days_since_last_touch": null, "why": "no direct history — closest active contributor by team leaderboard"}, {"author": "Alberto Contreras", "readiness_score": 0.0, "bucket": "cold", "direct_commits": 0, "cochanged_files_touched": 0, "neighbor_files_touched": 0, "days_since_last_touch": null, "why": "no direct history — closest active contributor by team leaderboard"}]}, {"file": "docs/.sphinx/get_vale_conf.py", "risk_level": "HIGH", "dominant_owner": "shanecrowley", "all_owners": ["shanecrowley"], "backups": [{"author": "ashuntu", "readiness_score": 20.58, "bucket": "cold", "direct_commits": 0, "cochanged_files_touched": 2, "neighbor_files_touched": 0, "days_since_last_touch": null, "why": "no direct history — closest active contributor by team leaderboard"}, {"author": "Zoe Spellman", "readiness_score": 0.0, "bucket": "cold", "direct_commits": 0, "cochanged_files_touched": 0, "neighbor_files_touched": 0, "days_since_last_touch": null, "why": "no direct history — closest active contributor by team leaderboard"}, {"author": "Alberto Contreras", "readiness_score": 0.0, "bucket": "cold", "direct_commits": 0, "cochanged_files_touched": 0, "neighbor_files_touched": 0, "days_since_last_touch": null, "why": "no direct history — closest active contributor by team leaderboard"}]}]}, "extraction": {"agent": "extraction_agent", "repo": "/Users/zohairmoosavi/ibm-hackathon/knowledge-handoff-4/backend/../sample-repos/steam-snap", "high_risk_files_drafted": 8, "files": [{"file": "docs/.sphinx/_static/js/overwrite_links.js", "risk_level": "HIGH", "why": "1 contributor, last touched 39 days ago, zero comments (doc score 0.0/100).", "commit_count_used": 2, "comment_count_extracted": 1, "draft_markdown": "# Knowledge Draft: `docs/.sphinx/_static/js/overwrite_links.js`\n\n> ⚠️ **DRAFT — for human review.** Auto-generated from git history and code\n> comments. Verify accuracy before sharing.\n\n---\n\n## File at a Glance\n\n| Field | Value |\n|---|---|\n| **Path** | `docs/.sphinx/_static/js/overwrite_links.js` |\n| **Primary owner(s)** | shanecrowley |\n| **Total commits** | 2 |\n| **Last modified** | 2026-07-21 |\n| **Complexity score** | 8.15 |\n| **Documentation score** | 0/100 |\n| **Risk assessment** | 1 contributor, last touched 39 days ago, zero comments (doc score 0.0/100). |\n\n---\n\n## What This File Does (inferred from commit history)\n\nThe following commit messages describe how this file has evolved.\nUse them to reconstruct the file's purpose and key design decisions.\n\n- **fix var name for old domain in links overwrite script**\n- **add version link overwrite script**\n\n---\n\n## Key Concepts (extracted from inline comments and docstrings)\n\n- Replaces oldDomain with newDomain in relevant anchor tags\n\n---\n\n## Suggested Questions for the Owner\n\nBefore the owner leaves, ask them to clarify:\n\n1. What is the single most important thing this file does?\n2. What would break first if this file was deleted or corrupted?\n3. Are there undocumented dependencies or assumptions a new maintainer must know?\n4. What is the safest way to test a change to this file?\n5. Is there any planned work on this file that hasn't been committed yet?\n\n---\n\n_Generated by extraction_agent.py — Knowledge Continuity Suite_"}, {"file": "docs/.sphinx/_templates/footer.html", "risk_level": "HIGH", "why": "1 contributor, last touched 39 days ago, zero comments (doc score 0.0/100).", "commit_count_used": 1, "comment_count_extracted": 0, "draft_markdown": "# Knowledge Draft: `docs/.sphinx/_templates/footer.html`\n\n> ⚠️ **DRAFT — for human review.** Auto-generated from git history and code\n> comments. Verify accuracy before sharing.\n\n---\n\n## File at a Glance\n\n| Field | Value |\n|---|---|\n| **Path** | `docs/.sphinx/_templates/footer.html` |\n| **Primary owner(s)** | shanecrowley |\n| **Total commits** | 1 |\n| **Last modified** | 2026-07-21 |\n| **Complexity score** | 16.56 |\n| **Documentation score** | 0/100 |\n| **Risk assessment** | 1 contributor, last touched 39 days ago, zero comments (doc score 0.0/100). |\n\n---\n\n## What This File Does (inferred from commit history)\n\nThe following commit messages describe how this file has evolved.\nUse them to reconstruct the file's purpose and key design decisions.\n\n- **add GA and cookie consent banner**\n\n---\n\n## Key Concepts (extracted from inline comments and docstrings)\n\n_No inline comments or docstrings found in this file._\n\n---\n\n## Suggested Questions for the Owner\n\nBefore the owner leaves, ask them to clarify:\n\n1. What is the single most important thing this file does?\n2. What would break first if this file was deleted or corrupted?\n3. Are there undocumented dependencies or assumptions a new maintainer must know?\n4. What is the safest way to test a change to this file?\n5. Is there any planned work on this file that hasn't been committed yet?\n\n---\n\n_Generated by extraction_agent.py — Knowledge Continuity Suite_"}, {"file": "docs/.sphinx/_templates/header.html", "risk_level": "HIGH", "why": "1 contributor, last touched 39 days ago, zero comments (doc score 0.0/100).", "commit_count_used": 1, "comment_count_extracted": 1, "draft_markdown": "# Knowledge Draft: `docs/.sphinx/_templates/header.html`\n\n> ⚠️ **DRAFT — for human review.** Auto-generated from git history and code\n> comments. Verify accuracy before sharing.\n\n---\n\n## File at a Glance\n\n| Field | Value |\n|---|---|\n| **Path** | `docs/.sphinx/_templates/header.html` |\n| **Primary owner(s)** | shanecrowley |\n| **Total commits** | 1 |\n| **Last modified** | 2026-07-21 |\n| **Complexity score** | 11.58 |\n| **Documentation score** | 0/100 |\n| **Risk assessment** | 1 contributor, last touched 39 days ago, zero comments (doc score 0.0/100). |\n\n---\n\n## What This File Does (inferred from commit history)\n\nThe following commit messages describe how this file has evolved.\nUse them to reconstruct the file's purpose and key design decisions.\n\n- **add GA and cookie consent banner**\n\n---\n\n## Key Concepts (extracted from inline comments and docstrings)\n\n- <!-- Google Tag Manager -->\n\n---\n\n## Suggested Questions for the Owner\n\nBefore the owner leaves, ask them to clarify:\n\n1. What is the single most important thing this file does?\n2. What would break first if this file was deleted or corrupted?\n3. Are there undocumented dependencies or assumptions a new maintainer must know?\n4. What is the safest way to test a change to this file?\n5. Is there any planned work on this file that hasn't been committed yet?\n\n---\n\n_Generated by extraction_agent.py — Knowledge Continuity Suite_"}, {"file": "docs/.sphinx/_templates/page.html", "risk_level": "HIGH", "why": "1 contributor, last touched 94 days ago, zero comments (doc score 0.0/100).", "commit_count_used": 1, "comment_count_extracted": 0, "draft_markdown": "# Knowledge Draft: `docs/.sphinx/_templates/page.html`\n\n> ⚠️ **DRAFT — for human review.** Auto-generated from git history and code\n> comments. Verify accuracy before sharing.\n\n---\n\n## File at a Glance\n\n| Field | Value |\n|---|---|\n| **Path** | `docs/.sphinx/_templates/page.html` |\n| **Primary owner(s)** | shanecrowley |\n| **Total commits** | 1 |\n| **Last modified** | 2026-05-27 |\n| **Complexity score** | 9.81 |\n| **Documentation score** | 0/100 |\n| **Risk assessment** | 1 contributor, last touched 94 days ago, zero comments (doc score 0.0/100). |\n\n---\n\n## What This File Does (inferred from commit history)\n\nThe following commit messages describe how this file has evolved.\nUse them to reconstruct the file's purpose and key design decisions.\n\n- **add snap store badge to docs homepage**\n\n---\n\n## Key Concepts (extracted from inline comments and docstrings)\n\n_No inline comments or docstrings found in this file._\n\n---\n\n## Suggested Questions for the Owner\n\nBefore the owner leaves, ask them to clarify:\n\n1. What is the single most important thing this file does?\n2. What would break first if this file was deleted or corrupted?\n3. Are there undocumented dependencies or assumptions a new maintainer must know?\n4. What is the safest way to test a change to this file?\n5. Is there any planned work on this file that hasn't been committed yet?\n\n---\n\n_Generated by extraction_agent.py — Knowledge Continuity Suite_"}, {"file": ".github/ISSUE_TEMPLATE/bug_report.yml", "risk_level": "HIGH", "why": "1 contributor, last touched 208 days ago, doc score 18.0/100.", "commit_count_used": 7, "comment_count_extracted": 0, "draft_markdown": "# Knowledge Draft: `.github/ISSUE_TEMPLATE/bug_report.yml`\n\n> ⚠️ **DRAFT — for human review.** Auto-generated from git history and code\n> comments. Verify accuracy before sharing.\n\n---\n\n## File at a Glance\n\n| Field | Value |\n|---|---|\n| **Path** | `.github/ISSUE_TEMPLATE/bug_report.yml` |\n| **Primary owner(s)** | ashuntu |\n| **Total commits** | 7 |\n| **Last modified** | 2026-02-02 |\n| **Complexity score** | 16.08 |\n| **Documentation score** | 18/100 |\n| **Risk assessment** | 1 contributor, last touched 208 days ago, doc score 18.0/100. |\n\n---\n\n## What This File Does (inferred from commit history)\n\nThe following commit messages describe how this file has evolved.\nUse them to reconstruct the file's purpose and key design decisions.\n\n- **fix: Correct issue template references to gaming-graphics**\n- **Update issue template labels**\n- **Fix issue templates and provide clearer directions**\n- **Update bug_report.yml**\n- **Adjust bug report prompt**\n- **Add GDK dialog for steamreport**\n- **Convert bug report and feature requests issue templates to yml form issue templates**\n\n---\n\n## Key Concepts (extracted from inline comments and docstrings)\n\n_No inline comments or docstrings found in this file._\n\n---\n\n## Suggested Questions for the Owner\n\nBefore the owner leaves, ask them to clarify:\n\n1. What is the single most important thing this file does?\n2. What would break first if this file was deleted or corrupted?\n3. Are there undocumented dependencies or assumptions a new maintainer must know?\n4. What is the safest way to test a change to this file?\n5. Is there any planned work on this file that hasn't been committed yet?\n\n---\n\n_Generated by extraction_agent.py — Knowledge Continuity Suite_"}, {"file": "docs/.sphinx/.pymarkdown.json", "risk_level": "HIGH", "why": "1 contributor, last touched 194 days ago, doc score 18.0/100.", "commit_count_used": 1, "comment_count_extracted": 0, "draft_markdown": "# Knowledge Draft: `docs/.sphinx/.pymarkdown.json`\n\n> ⚠️ **DRAFT — for human review.** Auto-generated from git history and code\n> comments. Verify accuracy before sharing.\n\n---\n\n## File at a Glance\n\n| Field | Value |\n|---|---|\n| **Path** | `docs/.sphinx/.pymarkdown.json` |\n| **Primary owner(s)** | shanecrowley |\n| **Total commits** | 1 |\n| **Last modified** | 2026-02-16 |\n| **Complexity score** | 7.4 |\n| **Documentation score** | 18/100 |\n| **Risk assessment** | 1 contributor, last touched 194 days ago, doc score 18.0/100. |\n\n---\n\n## What This File Does (inferred from commit history)\n\nThe following commit messages describe how this file has evolved.\nUse them to reconstruct the file's purpose and key design decisions.\n\n- **init docs**\n\n---\n\n## Key Concepts (extracted from inline comments and docstrings)\n\n_No inline comments or docstrings found in this file._\n\n---\n\n## Suggested Questions for the Owner\n\nBefore the owner leaves, ask them to clarify:\n\n1. What is the single most important thing this file does?\n2. What would break first if this file was deleted or corrupted?\n3. Are there undocumented dependencies or assumptions a new maintainer must know?\n4. What is the safest way to test a change to this file?\n5. Is there any planned work on this file that hasn't been committed yet?\n\n---\n\n_Generated by extraction_agent.py — Knowledge Continuity Suite_"}, {"file": "src/nvidia32", "risk_level": "HIGH", "why": "1 contributor, last touched 668 days ago, doc score 23.0/100.", "commit_count_used": 14, "comment_count_extracted": 7, "draft_markdown": "# Knowledge Draft: `src/nvidia32`\n\n> ⚠️ **DRAFT — for human review.** Auto-generated from git history and code\n> comments. Verify accuracy before sharing.\n\n---\n\n## File at a Glance\n\n| Field | Value |\n|---|---|\n| **Path** | `src/nvidia32` |\n| **Primary owner(s)** | ashuntu |\n| **Total commits** | 14 |\n| **Last modified** | 2024-10-30 |\n| **Complexity score** | 27.49 |\n| **Documentation score** | 23/100 |\n| **Risk assessment** | 1 contributor, last touched 668 days ago, doc score 23.0/100. |\n\n---\n\n## What This File Does (inferred from commit history)\n\nThe following commit messages describe how this file has evolved.\nUse them to reconstruct the file's purpose and key design decisions.\n\n- **fix: Correct sed version matching**\n- **Fix cases where driver version isn't found**\n- **Fix copied command text**\n- **Cleanup and tooltips**\n- **Add copy button**\n- **Add Do not show again toggle and commandline arguments**\n- **Keep window on top of others**\n- **Fix modinfo path errors**\n- **Remove header buttons**\n- **Use textview instead of label for command**\n\n---\n\n## Key Concepts (extracted from inline comments and docstrings)\n\n- !/usr/bin/python3\n- main text\n- run prompt\n- copy button\n- command text\n- Do not show again button\n- Ok button\n\n---\n\n## Suggested Questions for the Owner\n\nBefore the owner leaves, ask them to clarify:\n\n1. What is the single most important thing this file does?\n2. What would break first if this file was deleted or corrupted?\n3. Are there undocumented dependencies or assumptions a new maintainer must know?\n4. What is the safest way to test a change to this file?\n5. Is there any planned work on this file that hasn't been committed yet?\n\n---\n\n_Generated by extraction_agent.py — Knowledge Continuity Suite_"}, {"file": "docs/.sphinx/get_vale_conf.py", "risk_level": "HIGH", "why": "1 contributor, last touched 194 days ago, doc score 34.0/100.", "commit_count_used": 1, "comment_count_extracted": 16, "draft_markdown": "# Knowledge Draft: `docs/.sphinx/get_vale_conf.py`\n\n> ⚠️ **DRAFT — for human review.** Auto-generated from git history and code\n> comments. Verify accuracy before sharing.\n\n---\n\n## File at a Glance\n\n| Field | Value |\n|---|---|\n| **Path** | `docs/.sphinx/get_vale_conf.py` |\n| **Primary owner(s)** | shanecrowley |\n| **Total commits** | 1 |\n| **Last modified** | 2026-02-16 |\n| **Complexity score** | 21.46 |\n| **Documentation score** | 34/100 |\n| **Risk assessment** | 1 contributor, last touched 194 days ago, doc score 34.0/100. |\n\n---\n\n## What This File Does (inferred from commit history)\n\nThe following commit messages describe how this file has evolved.\nUse them to reconstruct the file's purpose and key design decisions.\n\n- **init docs**\n\n---\n\n## Key Concepts (extracted from inline comments and docstrings)\n\n- Clone the repository to a temporary directory and copy required files\n\n    Args:\n        file_source_dest: dictionary of file paths to copy from the repository,\n            and their destination paths\n- Copy a file or directory from source to destination\n\n    Args:\n        source_path: Path to the source file or directory\n        dest_path: Path to the destination\n        overwrite: Boolean flag to o\n- ! /usr/bin/env python\n- Configure logging\n- Source paths to copy from repo\n- Create temporary directory on disk for cloning\n- Copy files from the cloned repository to the destination paths\n- Clean up temporary directory\n- Skip if source file doesn't exist\n- Handle existing files\n- Copy the source to destination\n- entire directory\n- individual files\n- Define local directory paths\n- Parse command line arguments, default to overwrite_enabled = True\n\n---\n\n## Suggested Questions for the Owner\n\nBefore the owner leaves, ask them to clarify:\n\n1. What is the single most important thing this file does?\n2. What would break first if this file was deleted or corrupted?\n3. Are there undocumented dependencies or assumptions a new maintainer must know?\n4. What is the safest way to test a change to this file?\n5. Is there any planned work on this file that hasn't been committed yet?\n\n---\n\n_Generated by extraction_agent.py — Knowledge Continuity Suite_"}]}};</script>
+<script>
+(function () {
+  "use strict";
+
+  // ---------------------------------------------------------------- state
+  var DATA = null;          // parsed reports
+  var currentTab = "overview";
+  var riskFilter = "ALL";
+  var searchQ = "";
+
+  // ---------------------------------------------------------------- helpers
+  function $(sel, root) { return (root || document).querySelector(sel); }
+  function $$(sel, root) { return Array.prototype.slice.call((root || document).querySelectorAll(sel)); }
+
+  function esc(s) {
+    return String(s == null ? "" : s)
+      .replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;");
+  }
+
+  function fmtNum(n) {
+    if (n == null || n === "" || (typeof n === "number" && isNaN(n))) return "—";
+    return Number(n).toLocaleString(undefined, { maximumFractionDigits: 1 });
+  }
+
+  function badge(cls, label) {
+    return '<span class="badge ' + esc(cls) + '">' + esc(label) + "</span>";
+  }
+
+  function scorebar(score) {
+    var s = Math.max(0, Math.min(100, Number(score) || 0));
+    var color = s >= 60 ? "var(--ready)" : s >= 30 ? "var(--familiar)" : "var(--high)";
+    return '<div class="scorebar" title="score ' + fmtNum(score) + '"><div style="width:' +
+      s + "%;background:" + color + '"></div></div>';
+  }
+
+  function backupStats(b) {
+    var stats = "";
+    if (b.direct_commits != null) {
+      stats += "direct " + b.direct_commits + " commit" + (b.direct_commits === 1 ? "" : "s") + " · ";
+    }
+    stats += "co-change " + (b.cochanged_files_touched || 0) + " · neighbor " + (b.neighbor_files_touched || 0) + " · " +
+      (b.days_since_last_touch != null ? fmtNum(b.days_since_last_touch) + "d ago" : "no recent touch");
+    return stats;
+  }
+
+  function fileCell(file, high) {
+    return '<td class="file-cell">' + esc(file) + "</td>";
+  }
+
+  function mon(m) {
+    return '<span style="font-family:ui-monospace,Menlo,Consolas,monospace;font-size:12.5px">' + esc(m) + "</span>";
+  }
+
+  function entryFor(files, file) {
+    for (var i = 0; i < files.length; i++) if (files[i].file === file) return files[i];
+    return null;
+  }
+
+  function riskMap() {
+    var m = {};
+    (DATA.risk || []).forEach(function (r) { m[r.file] = r; });
+    return m;
+  }
+
+  // ---------------------------------------------------------------- data load
+  function loadData() {
+    if (window.INLINE_REPORTS) { DATA = window.INLINE_REPORTS; boot(); return; }
+    fetch("/api/all")
+      .then(function (r) { if (!r.ok) throw new Error("HTTP " + r.status); return r.json(); })
+      .then(function (d) { DATA = d.reports || d; boot(); })
+      .catch(function (e) {
+        $("#view").innerHTML =
+          '<div class="card"><h3>Could not load reports</h3><p class="muted">' +
+          esc(e.message) + "</p><p class=\"muted\">Run the dashboard server with " +
+          mon("python3 dashboard/server.py") + " then open " + mon("http://127.0.0.1:8765") + ".</p></div>";
+      });
+  }
+
+  // ---------------------------------------------------------------- markdown (tiny)
+  function md(s) {
+    if (!s) return "";
+    s = esc(s);
+    var lines = s.split(/\r?\n/);
+    var out = [];
+    var ulOpen = false;
+    function closeUl() { if (ulOpen) { out.push("</blockquote>"); ulOpen = false; } }
+    for (var i = 0; i < lines.length; i++) {
+      var l = lines[i].trimEnd();
+      l = l.replace(/\*\*([^*]+)\*\*/g, "<strong>$1</strong>")
+           .replace(/\*([^*]+)\*/g, "<em>$1</em>")
+           .replace(/`([^`]+)`/g, "<code>$1</code>");
+      if (l === "") { closeUl(); continue; }
+      if (l.indexOf("|") > -1 && !/^\s*:?-{3,}/.test(l)) {
+        closeUl();
+        out.push("<pre>" + l + "</pre>");
+        continue;
+      }
+      var m1 = l.match(/^# (.+)$/);
+      if (m1) { closeUl(); out.push('<div class="md-h md-h1">' + m1[1] + "</div>"); continue; }
+      var m2 = l.match(/^## (.+)$/);
+      if (m2) { closeUl(); out.push('<div class="md-h md-h2">' + m2[1] + "</div>"); continue; }
+      var m3 = l.match(/^### (.+)$/);
+      if (m3) { closeUl(); out.push('<div class="md-h md-h3">' + m3[1] + "</div>"); continue; }
+      var mq = l.match(/^&gt;\s?(.*)$/);
+      if (mq) { closeUl(); out.push('<div class="md-li muted" style="border-left:2px solid var(--border);padding-left:10px">' + mq[1] + "</div>"); continue; }
+      var b = l.match(/^[-*]\s+(.*)$/);
+      if (b) { if (!ulOpen) { out.push('<blockquote style="margin:4px 0">'); ulOpen = true; } out.push('<span class="md-li">• ' + b[1] + "</span>"); continue; }
+      var no = l.match(/^\d+\.\s+(.*)$/);
+      if (no) { closeUl(); out.push('<span class="md-li">' + no[1] + "</span>"); continue; }
+      var hr = l.match(/^---+$/);
+      if (hr) { closeUl(); out.push("<hr style='border:none;border-top:1px solid var(--border);margin:8px 0'>"); continue; }
+      out.push("<pre>" + l + "</pre>");
+    }
+    closeUl();
+    return out.join("");
+  }
+
+  // ---------------------------------------------------------------- view: overview
+  function stats() {
+    var c = DATA.contributor || { files: [], file_count_analyzed: 0 };
+    var cm = DATA.complexity;
+    var doc = DATA.documentation;
+    var r = DATA.risk || [];
+    var ob = DATA.onboarding || { files: [] };
+    var ex = DATA.extraction || { files: [] };
+
+    var single = c.files.filter(function (f) { return (f.author_count || 0) <= 1; });
+    var byLevel = { HIGH: 0, MEDIUM: 0, LOW: 0 };
+    r.forEach(function (x) { byLevel[x.risk_level] = (byLevel[x.risk_level] || 0) + 1; });
+
+    var ownerCount = {};
+    ob.files.forEach(function (f) { ownerCount[f.dominant_owner] = (ownerCount[f.dominant_owner] || 0) + 1; });
+    var siloOwner = null, siloN = 0;
+    Object.keys(ownerCount).forEach(function (k) { if (ownerCount[k] > siloN) { siloN = ownerCount[k]; siloOwner = k; } });
+
+    var oldest = null, oldestFile = null;
+    c.files.forEach(function (f) { if (oldest === null || f.days_since_last_touch > oldest) { oldest = f.days_since_last_touch; oldestFile = f.file; } });
+
+    var draftMd = ex.files.filter(function (f) { return f.draft_markdown; }).length;
+
+    return {
+      contributor: c, complexity: cm, doc: doc, risk: r, ob: ob, ex: ex,
+      single, byLevel, siloOwner, siloN, oldest, oldestFile, draftMd,
+      totalContrib: c.file_count_analyzed || c.files.length
+    };
+  }
+
+  function tiles() {
+    var s = stats();
+    var tiles = [
+      { n: s.totalContrib, label: "Files analyzed", note: "contributor agent",
+        tip: "Git-tracked files the Contributor Agent scored from real commit history. Files with no history are skipped." },
+      { n: s.byLevel.HIGH, label: "HIGH risk · knowledge", note: s.byLevel.HIGH + " of " + s.risk.length + " ranked files", cls: "HIGH",
+        tip: "Files ranked HIGH by the risk pipeline: 1–2 known authors, above-median complexity, and a documentation score under 40/100." },
+      { n: s.single.length, label: "Single-author files", note: "bus-factor risk", cls: s.single.length ? "danger" : "",
+        tip: "Files with exactly one contributor in git history — the owner is a single point of failure (bus factor = 1)." },
+      { n: s.ob.files.length, label: "Files with successors ranked", note: "module 2", cls: "ok",
+        tip: "Of the HIGH-risk files, how many got a ranked backup-owner shortlist from the Onboarding Agent." },
+      { n: s.draftMd, label: "Knowledge drafts drafted", note: "module 3", cls: "ok",
+        tip: "HIGH-risk files with an auto-generated knowledge draft: extracted comments, commit history, and review questions for the owner." }
+    ];
+    return tiles.map(function (t) {
+      var numCls = t.cls === "HIGH" ? " style='color:var(--high)'" :
+                   t.cls === "danger" ? " style='color:var(--high)'" :
+                   t.cls === "ok" ? " style='color:var(--accent-2)'" : "";
+      return '<div class="stat"><div class="stat-num"' + numCls + ">" + t.n + "</div>" +
+        '<div class="stat-label" data-tip="' + esc(t.tip) + '">' + esc(t.label) + "</div>" +
+        '<div class="stat-note">' + esc(t.note) + "</div></div>";
+    }).join("");
+  }
+
+  function overviewHTML() {
+    var s = stats();
+    var h = "";
+    h += '<div class="view-head"><h2>Suite overview</h2>' +
+      '<div class="view-sub">One pipeline — three modules — from git history to onboarding readiness and knowledge drafts.</div></div>';
+    h += '<div class="stat-grid">' + tiles() + "</div>";
+
+    h += atlasHTML();
+
+    h += '<div class="banner alert"><strong>Knowledge silo:</strong> ' + esc(s.siloOwner || "—") +
+      ' is the dominant owner of ' + s.siloN + " of " + s.ob.files.length +
+      " HIGH-risk files. All successor candidates are currently <b>cold</b> — the team has a single point of failure on every hotspot.</div>";
+    if (s.oldest !== null) {
+      h += '<div class="banner info"><strong>Most stale:</strong> ' + esc(s.oldestFile) +
+        ' untouched for ' + fmtNum(s.oldest) + " days, single author. Worst-case bus-factor scenario.</div>";
+    }
+
+    h += '<div class="card"><h3>Most complex files</h3>';
+    var topC = (s.complexity.files || []).slice().sort(function (a, b) { return b.complexity_score - a.complexity_score; }).slice(0, 5);
+    h += '<table class="tbl"><tr><th>File</th><th class="num"><span data-tip="Complexity score 0–100. raw = NLOC + average cyclomatic complexity × 10, normalized so the most complex file in the repo = 100.">Score</span></th><th class="num"><span data-tip="NLOC = Non-Lines of Code: source lines, excluding blank lines and comments.">NLOC</span></th></tr>';
+    topC.forEach(function (f) {
+      h += "<tr>" + fileCell(f.file) + '<td class="num">' + fmtNum(f.complexity_score) + "</td>" +
+        '<td class="num">' + fmtNum(f.metrics.nloc) + "</td></tr>";
+    });
+    h += "</table></div>";
+
+    h += '<div class="card"><h3>HIGH-risk files — full picture</h3>';
+    var risks = s.risk.slice().filter(function (x) { return x.risk_level === "HIGH"; });
+    h += '<table class="tbl"><tr><th>File</th><th>Why</th><th class="num"><span data-tip="Days since this file\'s most recent commit in git history. Higher = staler = more knowledge at risk.">Last touch</span></th><th class="num"><span data-tip="Same complexity score (0–100) as in the Most complex files table.">Complexity</span></th></tr>';
+    risks.forEach(function (x) {
+      var owners = entryFor(s.contributor.files, x.file);
+      var last = owners ? owners.days_since_last_touch : x.last_touch_days_ago;
+      h += '<tr class="clickable" data-file="' + encodeURIComponent(x.file) + '">' +
+        '<td class="file-cell">' + esc(x.file) + "</td>" +
+        '<td class="muted">' + esc(x.why) + "</td>" +
+        '<td class="num">' + (last == null ? "—" : fmtNum(last) + "d") + "</td>" +
+        '<td class="num">' + fmtNum(x.complexity_score) + "</td></tr>";
+    });
+    h += "</table></div>";
+    return h;
+  }
+
+  // ---------------------------------------------------------------- module 1: risk
+  function atlasHTML() {
+    var s = stats();
+    var rows = (s.risk || []);
+    if (!rows.length) return "";
+    var cs = rows.map(function (x) { return x.complexity_score || 0; });
+    var mn = Math.min.apply(null, cs), mx = Math.max.apply(null, cs);
+    function sizeOf(x) {
+      var c = x.complexity_score || 0;
+      var t = mx > mn ? (c - mn) / (mx - mn) : 0.5;
+      return Math.round(22 + t * 52);
+    }
+    var lvl = { HIGH: 0, MEDIUM: 0, LOW: 0 };
+    rows.forEach(function (x) { lvl[x.risk_level] = (lvl[x.risk_level] || 0) + 1; });
+    var h = '<div class="card"><div style="display:flex;justify-content:space-between;align-items:baseline;gap:12px;flex-wrap:wrap">' +
+      '<h3>Repo risk atlas</h3>' +
+      '<div class="atlas-legend">' +
+      '<span><i style="background:var(--high)"></i>HIGH ' + lvl.HIGH + "</span>" +
+      '<span><i style="background:var(--medium)"></i>MEDIUM ' + lvl.MEDIUM + "</span>" +
+      '<span><i style="background:var(--low)"></i>LOW ' + lvl.LOW + "</span>" +
+      '<span class="muted">· square size = complexity</span></div></div>' +
+      '<p class="view-sub" style="margin:6px 0 12px">One square per tracked file. Hover for details, click for the full drill-down.</p>' +
+      '<div class="atlas">';
+    rows.forEach(function (x) {
+      var n = sizeOf(x);
+      h += '<div class="atlas-cell clickable" data-file="' + encodeURIComponent(x.file) + '" ' +
+        'style="width:' + n + 'px;height:' + n + 'px;background:var(--' + (x.risk_level || "low").toLowerCase() + ')"></div>';
+    });
+    h += "</div></div>";
+    return h;
+  }
+
+  // ---------------------------------------------------------------- module 1: risk
+  function riskHTML() {
+    var s = stats();
+    var h = "";
+    h += '<div class="view-head"><h2>Knowledge-Loss Risk Mapper</h2>' +
+      '<div class="view-sub">Every tracked file ranked by author count, staleness, complexity and documentation gap.</div></div>';
+    h += '<div class="stat-grid">' +
+      '<div class="stat"><div class="stat-num" style="color:var(--high)">' + s.byLevel.HIGH + '</div><div class="stat-label">HIGH risk</div></div>' +
+      '<div class="stat"><div class="stat-num" style="color:var(--medium)">' + s.byLevel.MEDIUM + '</div><div class="stat-label">MEDIUM risk</div></div>' +
+      '<div class="stat"><div class="stat-num" style="color:var(--low)">' + s.byLevel.LOW + '</div><div class="stat-label">LOW risk</div></div>' +
+      '<div class="stat"><div class="stat-num">' + s.single.length + '</div><div class="stat-label">Single-author files</div></div>' +
+      "</div>";
+
+    var levels = ["ALL", "HIGH", "MEDIUM", "LOW"];
+    h += '<div class="toolbar"><label>Filter</label><div class="seg">' +
+      levels.map(function (l) {
+        return '<button data-level="' + l + '" class="' + (riskFilter === l ? "active" : "") + '">' + l + "</button>";
+      }).join("") +
+      '</div><input type="search" id="risk-search" placeholder="Search file name…" value="' + esc(searchQ) + '"></div>';
+
+    var rows = s.risk.slice().sort(function (a, b) {
+      var lv = { HIGH: 0, MEDIUM: 1, LOW: 2 };
+      return (lv[a.risk_level] - lv[b.risk_level]) || (b.last_touch_days_ago - a.last_touch_days_ago);
+    });
+    if (riskFilter !== "ALL") rows = rows.filter(function (x) { return x.risk_level === riskFilter; });
+    if (searchQ) rows = rows.filter(function (x) { return x.file.toLowerCase().indexOf(searchQ.toLowerCase()) > -1; });
+
+    h += '<div class="card"><table class="tbl"><tr>' +
+      "<th>File</th><th>Level</th><th class=\"num\">Authors</th><th class=\"num\">Stale (days)</th>" +
+      '<th class="num">Complexity</th><th class="num">Docs</th><th>Why</th></tr>';
+    rows.forEach(function (x) {
+      var owners = entryFor(s.contributor.files, x.file);
+      h += '<tr class="clickable" data-file="' + encodeURIComponent(x.file) + '">' +
+        '<td class="file-cell">' + esc(x.file) + "</td>" +
+        "<td>" + badge(x.risk_level, x.risk_level) + "</td>" +
+        '<td class="num">' + (owners ? owners.author_count : x.author_count) + "</td>" +
+        '<td class="num">' + fmtNum(x.last_touch_days_ago) + "</td>" +
+        '<td class="num">' + fmtNum(x.complexity_score) + "</td>" +
+        '<td class="num">' + fmtNum(x.doc_score) + "</td>" +
+        '<td class="muted">' + esc((x.why || "").slice(0, 120)) + "</td></tr>";
+    });
+    h += "</table></div>";
+    return h;
+  }
+
+  // ---------------------------------------------------------------- module 1: contributors
+  function busfactorHTML() {
+    var c = DATA.contributor || {};
+    var h = '';
+    h += '<div class="view-head"><h2>Bus-Factor Analysis</h2>' +
+      '<div class="view-sub">Distinct contributor count per file — fewest authors first. Files with one author are the bus-factor risk.</div></div>';
+    var single = c.files.filter(function (f) { return (f.author_count || 0) <= 1; });
+    h += '<div class="stat-grid">' +
+      '<div class="stat"><div class="stat-num">' + (c.file_count_analyzed || c.files.length) + '</div><div class="stat-label">Files analyzed</div></div>' +
+      '<div class="stat"><div class="stat-num" style="color:var(--high)">' + single.length + '</div><div class="stat-label">Single-author files</div></div>' +
+      '<div class="stat"><div class="stat-num" style="color:var(--accent-2)">' + (c.files.length - single.length) + '</div><div class="stat-label">Shared files</div></div>' +
+      "</div>";
+    h += '<div class="toolbar"><input type="search" id="risk-search" placeholder="Search file name…"></div>';
+    var rows = c.files.slice().sort(function (a, b) { return (a.author_count - b.author_count) || (b.days_since_last_touch - a.days_since_last_touch); });
+    h += '<div class="card"><table class="tbl"><tr><th>File</th><th class="num">Authors</th><th>Contributors</th><th class="num">Commits</th><th>Last touch</th><th class="num">Stale (days)</th></tr>';
+    rows.forEach(function (f) {
+      h += '<tr class="clickable' + (f.author_count <= 1 ? " stale" : "") + '" data-file="' + encodeURIComponent(f.file) + '">' +
+        '<td class="file-cell">' + esc(f.file) + "</td>" +
+        '<td class="num">' + (f.author_count <= 1 ? '<span style="color:var(--high);font-weight:700">' + fmtNum(f.author_count) + "</span>" : fmtNum(f.author_count)) + "</td>" +
+        '<td class="muted nowrap">' + esc(Array.isArray(f.authors) ? f.authors.join(", ") : "—") + "</td>" +
+        '<td class="num">' + fmtNum(f.commit_count) + "</td>" +
+        '<td class="nowrap">' + esc(f.last_touch_date || "") + "</td>" +
+        '<td class="num">' + fmtNum(f.days_since_last_touch) + "</td></tr>";
+    });
+    h += "</table></div>";
+    return h;
+  }
+
+  // ---------------------------------------------------------------- module 1: complexity
+  function complexityHTML() {
+    var c = DATA.complexity || {};
+    var tracked = (DATA.contributor && (DATA.contributor.file_count_analyzed || DATA.contributor.files.length)) || null;
+    var h = '';
+    h += '<div class="view-head"><h2>Complexity &amp; Criticality</h2>' +
+      '<div class="view-sub">Real cyclomatic complexity (via lizard) + line counts, normalized to 0-100. Only code-containing files are scored; binary and empty files are skipped' +
+      (tracked ? ' (' + (c.files || []).length + " of " + tracked + " tracked files)" : "") + '.</div></div>';
+    var rows = (c.files || []).slice().sort(function (a, b) { return b.complexity_score - a.complexity_score; });
+    var withCC = rows.filter(function (f) { return f.metrics && f.metrics.max_cyclomatic_complexity != null; });
+    h += '<div class="stat-grid">' +
+      '<div class="stat"><div class="stat-num">' + rows.length + '</div><div class="stat-label">Files scored</div></div>' +
+      '<div class="stat"><div class="stat-num">' + (withCC.length) + '</div><div class="stat-label">With cyclomatic data</div></div>' +
+      '<div class="stat"><div class="stat-num">' + rows.reduce(function (a, f) { return a + (f.metrics ? f.metrics.nloc || 0 : 0); }, 0).toLocaleString() + '</div><div class="stat-label">Total lines</div></div>' +
+      "</div>";
+    h += '<div class="card"><table class="tbl"><tr><th>File</th><th class="num">Score</th><th class="num">NLOC</th><th class="num">Functions</th>' +
+      '<th class="num">Avg CC</th><th class="num">Max CC</th></tr>';
+    rows.forEach(function (f) {
+      var m = f.metrics || {};
+      h += '<tr class="clickable" data-file="' + encodeURIComponent(f.file) + '">' +
+        '<td class="file-cell">' + esc(f.file) + "</td>" +
+        '<td class="num"><div style="display:flex;align-items:center;gap:8px;justify-content:flex-end"><span>' + fmtNum(f.complexity_score) + '</span>' + scorebar(f.complexity_score) + "</div></td>" +
+        '<td class="num">' + fmtNum(m.nloc) + "</td>" +
+        '<td class="num">' + fmtNum(m.function_count) + "</td>" +
+        '<td class="num">' + fmtNum(m.avg_cyclomatic_complexity) + "</td>" +
+        '<td class="num">' + fmtNum(m.max_cyclomatic_complexity) + "</td></tr>";
+    });
+    h += "</table></div>";
+    return h;
+  }
+
+  // ---------------------------------------------------------------- module 1: documentation
+  function documentationHTML() {
+    var d = DATA.documentation || {};
+    var rows = (d.files || []).slice().sort(function (a, b) { return a.documentation_score - b.documentation_score; });
+    var avg = rows.length ? rows.reduce(function (a, f) { return a + (f.documentation_score || 0); }, 0) / rows.length : 0;
+    var h = '';
+    h += '<div class="view-head"><h2>Documentation Gap</h2>' +
+      '<div class="view-sub">How well each file self-documents: comment blocks, docstrings, file descriptions, external docs.</div></div>';
+    h += '<div class="stat-grid">' +
+      '<div class="stat"><div class="stat-num">' + rows.length + '</div><div class="stat-label">Files scored</div></div>' +
+      '<div class="stat"><div class="stat-num">' + fmtNum(avg) + '</div><div class="stat-label">Average score</div></div>' +
+      '<div class="stat"><div class="stat-num" style="color:var(--high)">' + rows.filter(function (f) { return f.documentation_score < 30; }).length + '</div><div class="stat-label">Badly documented (&lt; 30)</div></div>' +
+      "</div>";
+    h += '<div class="card"><table class="tbl"><tr><th>File</th><th class="num">Score</th><th>Signals</th><th>Reason</th></tr>';
+    rows.forEach(function (f) {
+      var m = f.metrics || {};
+      var sig = (m.comment_count || 0) + " comments, " + (m.docstring_count || 0) + " docstrings" +
+        (m.has_external_documentation ? ", external docs" : "") +
+        (m.has_file_description ? ", description" : "");
+      h += '<tr class="clickable" data-file="' + encodeURIComponent(f.file) + '">' +
+        '<td class="file-cell">' + esc(f.file) + "</td>" +
+        '<td class="num"><div style="display:flex;align-items:center;gap:8px;justify-content:flex-end"><span>' + fmtNum(f.documentation_score) + '</span>' + scorebar(f.documentation_score) + "</div></td>" +
+        '<td class="muted">' + esc(sig) + "</td>" +
+        '<td class="muted">' + esc((f.reason || "").slice(0, 140)) + "</td></tr>";
+    });
+    h += "</table></div>";
+    return h;
+  }
+
+  // ---------------------------------------------------------------- module 2: onboarding
+  function onboardingHTML() {
+    var ob = DATA.onboarding || {};
+    var s = stats();
+    var h = '';
+    h += '<div class="view-head"><h2>Onboarding-Readiness Gap Analyzer</h2>' +
+      '<div class="view-sub">For each HIGH-risk file: who owns it, and who is closest to taking over if they leave. Readiness = breadth × 0.5 + recency × 0.3 + depth × 0.2.</div></div>';
+    h += '<div class="stat-grid">' +
+      '<div class="stat"><div class="stat-num">' + ob.files.length + '</div><div class="stat-label">HIGH-risk files</div></div>' +
+      '<div class="stat"><div class="stat-num" style="color:var(--high)">' + (s.siloOwner ? s.siloN : 0) + '</div><div class="stat-label">Owned by one person</div></div>' +
+      '<div class="stat"><div class="stat-num" style="color:var(--high)">' + ob.files.reduce(function (a, f) { return a + (f.backups || []).filter(function (b) { return b.bucket === "cold"; }).length; }, 0) + '</div><div class="stat-label">Cold successors (no direct history)</div></div>' +
+      "</div>";
+    if (s.siloOwner) {
+      h += '<div class="banner alert"><strong>' + esc(s.siloOwner) + " owns " + s.siloN + " of " + ob.files.length +
+        " HIGH-risk files.</strong> Every backup candidate is bucketed <b>cold</b> — nobody has recent hands-on history with these files. If the owner leaves, knowledge goes with them.</div>";
+    }
+    (ob.files || []).forEach(function (f) {
+      var r = riskMap()[f.file];
+      var backups = f.backups || [];
+      h += '<div class="ob-file"><div class="ob-head">' +
+        '<div><span class="file-cell" style="font-weight:700">' + esc(f.file) + "</span> " + badge(r && r.risk_level || f.risk_level, r && r.risk_level || f.risk_level) + "</div>" +
+        (backups.length ? '<div style="display:flex;align-items:center;gap:20px"><span class="muted">' + backups.length + " backup" + (backups.length > 1 ? "s" : "") + "</span><span class=\"ob-owner\"></span></div>" : "") +
+        "</div>" +
+        '<div class="ob-owner"><strong>Dominant owner:</strong> <span style="color:#fff">' + esc(f.dominant_owner || "—") + "</span>" +
+        (f.all_owners && f.all_owners.length > 1 ? ' · all owners: ' + esc(f.all_owners.join(", ")) : "") + "</div>";
+      h += '<div class="backups">';
+      backups.forEach(function (b) {
+        var score = Number(b.readiness_score) || 0;
+        h += '<div class="backup-row">' +
+          '<div class="backup-name">' + esc(b.author) + ' ' + badge(b.bucket, b.bucket) + "</div>" +
+          '<div style="display:flex;align-items:center;gap:8px;justify-content:flex-end"><span class="backup-score" data-tip="Readiness score = breadth × 0.5 + recency × 0.3 + depth × 0.2 (breadth: files co-changed, recency: last touch, depth: direct commits).">' + fmtNum(score) + "</span>" + scorebar(score) + "</div>" +
+          '<div class="nowrap muted" style="font-size:12px">' + backupStats(b) + "</div>" +
+          '<div class="backup-why">' + esc(b.why) + "</div>" +
+          "</div>";
+      });
+      h += "</div></div>";
+    });
+    return h;
+  }
+
+  // ---------------------------------------------------------------- module 3: extraction
+  function extractionHTML() {
+    var ex = DATA.extraction || {};
+    var h = '';
+    h += '<div class="view-head"><h2>Knowledge Extraction Assistant</h2>' +
+      '<div class="view-sub">One auditable draft per HIGH-risk file: commit history, extracted comments, owner info, risk metadata, and review questions for the owner.</div></div>';
+    var rows = ex.files || [];
+    var drafted = ex.high_risk_files_drafted != null ? ex.high_risk_files_drafted : rows.length;
+    h += '<div class="stat-grid">' +
+      '<div class="stat"><div class="stat-num">' + drafted + '</div><div class="stat-label">Drafts generated</div></div>' +
+      '<div class="stat"><div class="stat-num">' + rows.reduce(function (a, f) { return a + (f.comment_count_extracted || 0); }, 0) + '</div><div class="stat-label">Comments extracted</div></div>' +
+      '<div class="stat"><div class="stat-num">' + rows.reduce(function (a, f) { return a + (f.commit_count_used || 0); }, 0) + '</div><div class="stat-label">Commits mined</div></div>' +
+      "</div>";
+    h += '<div class="draft-grid">';
+    rows.forEach(function (f) {
+      h += '<div class="draft"><div class="draft-head">' +
+        '<div class="draft-file">' + esc(f.file) + "</div>" +
+        '<div class="draft-meta"><span>' + badge(f.risk_level || "HIGH", f.risk_level || "HIGH") + "</span>" +
+        "<span>comments: " + fmtNum(f.comment_count_extracted) + "</span>" +
+        "<span>commits: " + fmtNum(f.commit_count_used) + "</span></div>" +
+        (f.why ? '<div class="draft-why">' + esc(f.why) + "</div>" : "") +
+        "</div>" +
+        '<div class="draft-body">' + md(f.draft_markdown || "*No draft body.*") + "</div></div>";
+    });
+    h += "</div>";
+    return h;
+  }
+
+  // ---------------------------------------------------------------- orchestration / pipeline
+  function pipelineHTML() {
+    var s = stats();
+    var r = s.risk || [];
+    var byLevel = { HIGH: 0, MEDIUM: 0, LOW: 0 };
+    r.forEach(function (x) { byLevel[x.risk_level] = (byLevel[x.risk_level] || 0) + 1; });
+
+    function node(name, role, out) {
+      return '<div class="pnode"><div><div class="pn-name">' + name + "</div>" +
+        '<div class="pn-role">' + role + "</div></div>" +
+        '<div class="pn-out">' + out + "</div></div>";
+    }
+    function arrow(label) {
+      return '<div class="parrow"><span class="arlabel">' + label + "</span></div>";
+    }
+
+    function whyRow(x) {
+      var owners = entryFor(s.contributor.files, x.file);
+      var n = owners && owners.author_count != null ? owners.author_count
+             : (x.author_count != null ? x.author_count : "—");
+      return '<tr><td class="file-cell">' + esc(x.file || "—") + "</td><td>" + badge(x.risk_level, x.risk_level) + "</td><td>" +
+        esc(String(n)) + "</td><td class=\"muted\">" + esc(x.why || "—") + "</td></tr>";
+    }
+
+    var h = "";
+    h += '<div class="view-head"><h2>Orchestration</h2>' +
+      '<div class="view-sub">How the pipeline turns raw git history into ranked risk, onboarding shortlists, and knowledge drafts — live from this run.</div></div>';
+
+    h += '<div class="card"><h3>The orchestrator output — from the actual run</h3>' +
+      '<table class="tbl"><tr><th>File</th><th>Risk</th><th>Contributors</th><th>Why</th></tr>';
+    r.filter(function (x) { return x.risk_level === "HIGH"; }).slice(0, 5).forEach(function (x) { h += whyRow(x); });
+    var med = r.find(function (x) { return x.risk_level === "MEDIUM"; });
+    var low = r.find(function (x) { return x.risk_level === "LOW"; });
+    if (med) h += whyRow(med);
+    if (low) h += whyRow(low);
+    h += '<tr><td colspan="4" class="muted" style="font-size:12px;padding-top:10px">' +
+      esc(r.length) + " files ranked · HIGH " + byLevel.HIGH + " / MEDIUM " + byLevel.MEDIUM + " / LOW " + byLevel.LOW +
+      " · median complexity score is the HIGH threshold · ties broken by ascending documentation score.</td></tr></table></div>";
+
+    h += '<div class="pipeline">';
+
+    h += node("git history", "sample-repos/steam-snap source repository", "tracked files");
+    h += arrow("read");
+
+    h += '<div class="p-agents">' +
+      '<div class="p-agent"><b>Contributor Agent</b><br>owners, author counts, staleness</div>' +
+      '<div class="p-agent"><b>Complexity Agent</b><br>NLOC + cyclomatic complexity → 0–100</div>' +
+      '<div class="p-agent"><b>Documentation Gap Agent</b><br>comments, docstrings, docs → 0–100</div>' +
+      "</div>";
+    h += arrow("three independent Bob subagents, run in parallel");
+
+    h += node("orchestrator", "merges the three subagent outputs per file, then classifies and ranks every file into HIGH / MEDIUM / LOW", null);
+    h += arrow("risk score → HIGH = 1–2 authors, above-median complexity, doc &lt; 40 · ties by ascending doc score · a plain-English \u201cwhy\u201d per file");
+
+    h += node("risk report", "ranked heatmap", "HIGH " + byLevel.HIGH + " / MEDIUM " + byLevel.MEDIUM + " / LOW " + byLevel.LOW);
+    h += arrow("HIGH-risk files feed the next two agents");
+
+    h += '<div class="p-agents">' +
+      '<div class="p-agent"><b>Onboarding Agent</b><br>ranks backup owners per file → readiness score</div>' +
+      '<div class="p-agent"><b>Extraction Agent</b><br>drafts a reviewable knowledge file per HIGH-risk file</div>' +
+      "</div>";
+    h += arrow("outputs");
+
+    h += node("knowledge continuity suite", "a ranked, actionable view of where the bus factor is 1 — and who could take over", null);
+    h += "</div>";
+
+    h += '<div class="card" style="margin-top:18px"><h3>Built with Bob — known limitations</h3>' +
+      '<ul class="pn-role" style="margin:0;padding-left:18px">' +
+      "<li>Complexity heuristic can false-positive on config files (e.g. YAML with many conditionals scores high).</li>" +
+      "<li>Risk thresholds (author count, doc &lt; 40) are not yet tuned to real multi-contributor projects.</li>" +
+      "<li>Validated on steam-snap only — a single, mostly single-author repo.</li>" +
+      "</ul></div>";
+
+    return h;
+  }
+
+  // ---------------------------------------------------------------- modal drill-down
+  function modalHTML(file) {
+    var s = stats();
+    var r = riskMap()[file];
+    var own = entryFor(s.contributor.files, file);
+    var cx = entryFor((s.complexity.files || []), file);
+    var doc = entryFor((s.doc.files || []), file);
+    var ob = entryFor(s.ob.files, file);
+    var ex = entryFor(s.ex.files, file);
+
+    var h = "";
+    h += '<button class="modal-close" id="modal-close" title="Close">' + String.fromCharCode(215) + "</button>";
+    h += '<div style="display:flex;justify-content:space-between;align-items:baseline;gap:12px">';
+    h += "<h2 class=\"file-cell\">" + esc(file) + "</h2>";
+    if (r) h += badge(r.risk_level, r.risk_level);
+    h += "</div>";
+
+    if (r || own) {
+      h += '<div class="modal-sec"><h3>Risk profile</h3><dl class="kv">';
+      if (own) {
+        h += "<dt>Contributors</dt><dd>" + fmtNum(own.author_count) + (own.authors && own.authors.length ? " — " + esc(own.authors.join(", ")) : "") + "</dd>";
+        h += "<dt>Last touch</dt><dd>" + esc(own.last_touch_date || "") + (own.days_since_last_touch != null ? " (" + fmtNum(own.days_since_last_touch) + " days ago)" : "") + "</dd>";
+        h += "<dt>Commits</dt><dd>" + fmtNum(own.commit_count) + " total on this file</dd>";
+      }
+      if (r) {
+        h += "<dt>Complexity</dt><dd>" + fmtNum(r.complexity_score) + " / 100</dd>";
+        h += "<dt>Docs</dt><dd>" + fmtNum(r.doc_score) + " / 100</dd>";
+        h += "<dt>Risk driver</dt><dd>" + esc(r.why || "") + "</dd>";
+      }
+      h += "</dl></div>";
+    }
+    if (cx) {
+      h += '<div class="modal-sec"><h3>Complexity metrics</h3><dl class="kv">';
+      h += "<dt>Lines</dt><dd>" + fmtNum(cx.metrics.nloc) + "</dd>";
+      h += "<dt>Functions</dt><dd>" + fmtNum(cx.metrics.function_count) + "</dd>";
+      h += "<dt>Cyclomatic</dt><dd>avg " + fmtNum(cx.metrics.avg_cyclomatic_complexity) + " · max " + fmtNum(cx.metrics.max_cyclomatic_complexity) + "</dd>";
+      h += "</dl></div>";
+    }
+    if (doc) {
+      h += '<div class="modal-sec"><h3>Documentation</h3><dl class="kv">';
+      h += "<dt>Score</dt><dd>" + fmtNum(doc.documentation_score) + " / 100</dd>";
+      if (doc.metrics) {
+        var dm = doc.metrics;
+        h += "<dt>Inline comments</dt><dd>" + fmtNum(dm.comment_count) + "</dd>";
+        h += "<dt>Docstrings</dt><dd>" + fmtNum(dm.docstring_count) + "</dd>";
+        h += "<dt>File description</dt><dd>" + (dm.has_file_description ? "yes" : "no") + "</dd>";
+        h += "<dt>External docs</dt><dd>" + (dm.has_external_documentation ? "yes" : "no") + "</dd>";
+      }
+      if (doc.reason) h += "<dt>Reason</dt><dd>" + esc(doc.reason) + "</dd>";
+      h += "</dl></div>";
+    }
+    if (ob) {
+      h += '<div class="modal-sec"><h3>Onboarding successors</h3>';
+      if (ob.dominant_owner) h += '<p class="muted" style="margin:0 0 8px;">Dominant owner: <strong style="color:#fff">' + esc(ob.dominant_owner) + "</strong>" +
+        (ob.all_owners && ob.all_owners.length > 1 ? ' · all owners: ' + esc(ob.all_owners.join(", ")) : "") + "</p>";
+      h += '<div class="backups">';
+      (ob.backups || []).forEach(function (b) {
+        var score = Number(b.readiness_score) || 0;
+        h += '<div class="backup-row">' +
+          '<div class="backup-name">' + esc(b.author) + " " + badge(b.bucket, b.bucket) + "</div>" +
+          '<div style="display:flex;align-items:center;gap:8px;justify-content:flex-end"><span>' + fmtNum(score) + "</span>" + scorebar(score) + "</div>" +
+          '<div class="nowrap muted" style="font-size:12px">' + backupStats(b) + "</div>" +
+          '<div class="backup-why">' + esc(b.why) + "</div></div>";
+      });
+      h += "</div></div>";
+    }
+    if (ex) {
+      h += '<div class="modal-sec"><h3>Extraction (module 3)</h3><dl class="kv">';
+      if (ex.comment_count_extracted != null) h += "<dt>Comments extracted</dt><dd>" + fmtNum(ex.comment_count_extracted) + "</dd>";
+      if (ex.commit_count_used != null) h += "<dt>Commits mined</dt><dd>" + fmtNum(ex.commit_count_used) + "</dd>";
+      if (ex.why) h += "<dt>Why this file</dt><dd>" + esc(ex.why) + "</dd>";
+      h += "</dl></div>";
+    }
+    if (ex && ex.draft_markdown) {
+      h += '<div class="modal-sec"><h3>Knowledge draft</h3><div class="card" style="margin:0">' + md(ex.draft_markdown) + "</div></div>";
+    }
+    return h;
+  }
+
+  // ---------------------------------------------------------------- wiring
+  function showTab(name) {
+    currentTab = name;
+    $$(".tab").forEach(function (b) { b.classList.toggle("active", b.dataset.tab === name); });
+    var v = $("#view");
+    switch (name) {
+      case "risk": v.innerHTML = riskHTML(); break;
+      case "busfactor": v.innerHTML = busfactorHTML(); break;
+      case "complexity": v.innerHTML = complexityHTML(); break;
+      case "documentation": v.innerHTML = documentationHTML(); break;
+      case "onboarding": v.innerHTML = onboardingHTML(); break;
+      case "extraction": v.innerHTML = extractionHTML(); break;
+      case "pipeline": v.innerHTML = pipelineHTML(); break;
+      default: v.innerHTML = overviewHTML();
+    }
+    wireView(v);
+  }
+
+  function wireView(v) {
+    var s = $("#risk-search", v);
+    if (s) {
+      s.addEventListener("input", debounce(function () {
+        var pos = s.selectionStart == null ? s.value.length : s.selectionStart;
+        searchQ = s.value.trim();
+        showTab(currentTab);
+        var ni = $("#risk-search");
+        if (ni) {
+          ni.focus();
+          try { ni.setSelectionRange(pos, pos); } catch (e) {}
+        }
+      }, 150));
+    }
+    $$(".seg button[data-level]", v).forEach(function (b) {
+      b.addEventListener("click", function () { riskFilter = b.dataset.level; showTab(currentTab); });
+    });
+    $$(".clickable[data-file]", v).forEach(function (tr) {
+      tr.addEventListener("click", function () { openModal(decodeURIComponent(tr.dataset.file)); });
+    });
+  }
+
+  function debounce(fn, ms) {
+    var t;
+    return function () { clearTimeout(t); t = setTimeout(fn, ms); };
+  }
+
+  function openModal(file) {
+    $("#modal").innerHTML = modalHTML(file);
+    $("#modal-backdrop").classList.add("open");
+    document.body.style.overflow = "hidden";
+    var closeBtn = $("#modal-close");
+    if (closeBtn) closeBtn.addEventListener("click", closeModal);
+  }
+  function closeModal() {
+    $("#modal-backdrop").classList.remove("open");
+    document.body.style.overflow = "";
+  }
+
+  function tipHTML(file) {
+    var x = riskMap()[file];
+    var own = entryFor((DATA.contributor && DATA.contributor.files) || [], file);
+    if (!x) return null;
+    var short = file.split("/").pop();
+    var h = "";
+    h += "<b>" + esc(short) + "</b> " + badge(x.risk_level, x.risk_level);
+    if (own) {
+      h += '<div class="tip-row"><span>Authors</span><span>' + esc(String(own.author_count)) + "</span>" +
+        '<span>Last touch</span><span>' + (own.days_since_last_touch != null ? fmtNum(own.days_since_last_touch) + "d ago" : "—") + "</span></div>";
+    }
+    h += '<div class="tip-row"><span>Complexity</span><span>' + fmtNum(x.complexity_score) + "/100</span>" +
+      '<span>Documentation</span><span>' + fmtNum(x.doc_score) + "/100</span></div>";
+    if (x.why) h += '<div class="tip-why" style="margin-top:5px">' + esc(x.why) + "</div>";
+    return h;
+  }
+
+  function boot() {
+    $$(".tab").forEach(function (b) {
+      b.addEventListener("click", function () { showTab(b.dataset.tab); });
+    });
+    $("#modal-backdrop").addEventListener("click", function (e) { if (e.target === e.currentTarget) closeModal(); });
+    document.addEventListener("keydown", function (e) { if (e.key === "Escape") closeModal(); });
+
+    var tipEl = document.createElement("div");
+    tipEl.id = "atlas-tip";
+    document.body.appendChild(tipEl);
+    var timer = null;
+    document.addEventListener("mouseover", function (e) {
+      var cell = e.target.closest ? e.target.closest(".atlas-cell") : null;
+      if (!cell) { if (timer) clearTimeout(timer); tipEl.style.display = "none"; return; }
+      clearTimeout(timer);
+      var html = tipHTML(decodeURIComponent(cell.dataset.file));
+      if (!html) return;
+      tipEl.innerHTML = html;
+      tipEl.style.display = "block";
+      var rect = cell.getBoundingClientRect();
+      var hgt = tipEl.offsetHeight, wdt = tipEl.offsetWidth;
+      var top = rect.top - hgt - 10;
+      if (top < 8) top = rect.bottom + 10;
+      var left = rect.left;
+      if (left + wdt > window.innerWidth - 8) left = Math.max(8, window.innerWidth - wdt - 8);
+      tipEl.style.left = left + "px";
+      tipEl.style.top = top + "px";
+    });
+    document.addEventListener("mouseout", function (e) {
+      if (e.target.closest && e.target.closest(".atlas-cell")) {
+        timer = setTimeout(function () { tipEl.style.display = "none"; }, 120);
+      }
+    });
+
+    showTab("overview");
+  }
+
+  loadData();
+})();
+</script>
+</body>
+</html>
