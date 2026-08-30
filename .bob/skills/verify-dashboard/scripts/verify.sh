@@ -48,10 +48,10 @@ try:
   ob=json.load(open(O+'onboarding_report.json',encoding='utf-8-sig'))
   ex=json.load(open(O+'extraction_report.json',encoding='utf-8-sig'))
   lvl={}
-  for f in rr['files']: lvl[f['risk_level']]=lvl.get(f['risk_level'],0)+1
+  for f in rr: lvl[f['risk_level']]=lvl.get(f['risk_level'],0)+1
   bu=sum(len(f.get('backups',[])) for f in ob.get('files',[]))
   print(f"tracked={cr.get('file_count_analyzed',len(cr.get('files',[])))} "
-        f"risk H:{lvl.get('HIGH',0)} M:{lvl.get('MEDIUM',0)} L:{lvl.get('LOW',0)} ranked={len(rr['files'])} "
+        f"risk H:{lvl.get('HIGH',0)} M:{lvl.get('MEDIUM',0)} L:{lvl.get('LOW',0)} ranked={len(rr)} "
         f"onboarding_files={len(ob.get('files',[]))} backups={bu} drafts={len(ex.get('files',[]))}")
 except Exception as e:
   print('fact-check unavailable:',e)
