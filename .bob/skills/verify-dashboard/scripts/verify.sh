@@ -31,15 +31,15 @@ console.log('all views render ok');
 NODE
 node "$T" "$OUT"; S=$?; rm -f "$T"; [ $S -eq 0 ] || exit 1
 
-echo "=== 3/5 rebuild bundle ==="; python3 build.py
+echo "=== 3/5 rebuild bundle ==="; python build.py
 
 echo "=== 4/5 server :8765 ==="
 pkill -f "server.py 8765" 2>/dev/null || true; sleep 1
-nohup python3 server.py 8765 > /tmp/dash-server.log 2>&1 & sleep 1
+nohup python server.py 8765 > /tmp/dash-server.log 2>&1 & sleep 1
 for u in / /api/all; do c=$(curl -s -o /dev/null -w "%{http_code}" "http://127.0.0.1:8765$u"); echo "  GET $u -> $c"; [ "$c" = 200 ] || exit 1; done
 
 echo "=== 5/5 facts ==="
-python3 - "$OUT" <<'PY'
+python - "$OUT" <<'PY'
 import json,sys
 O=sys.argv[1]+'/'
 try:
@@ -48,10 +48,10 @@ try:
   ob=json.load(open(O+'onboarding_report.json',encoding='utf-8-sig'))
   ex=json.load(open(O+'extraction_report.json',encoding='utf-8-sig'))
   lvl={}
-  for f in rr['files']: lvl[f['risk_level']]=lvl.get(f['risk_level'],0)+1
+  for f in rr: lvl[f['risk_level']]=lvl.get(f['risk_level'],0)+1
   bu=sum(len(f.get('backups',[])) for f in ob.get('files',[]))
   print(f"tracked={cr.get('file_count_analyzed',len(cr.get('files',[])))} "
-        f"risk H:{lvl.get('HIGH',0)} M:{lvl.get('MEDIUM',0)} L:{lvl.get('LOW',0)} ranked={len(rr['files'])} "
+        f"risk H:{lvl.get('HIGH',0)} M:{lvl.get('MEDIUM',0)} L:{lvl.get('LOW',0)} ranked={len(rr)} "
         f"onboarding_files={len(ob.get('files',[]))} backups={bu} drafts={len(ex.get('files',[]))}")
 except Exception as e:
   print('fact-check unavailable:',e)
