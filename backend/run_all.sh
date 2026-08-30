@@ -14,7 +14,7 @@ elif command -v python3.12 &>/dev/null; then
 elif command -v python3.13 &>/dev/null; then
     PY=python3.13
 elif command -v python3 &>/dev/null; then
-    PY=python3
+    PY=python
 elif command -v python &>/dev/null; then
     PY=python
 else
