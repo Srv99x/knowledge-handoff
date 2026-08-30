@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Knowledge Continuity Suite — Dashboard</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<header class="topbar">
+  <div class="topbar-inner">
+    <div class="brand">
+      <div class="brand-mark">KC</div>
+      <div>
+        <div class="brand-name">Knowledge Continuity Suite</div>
+        <div class="brand-sub">Bus-factor risk mapper &middot; onboarding readiness &middot; extraction assistant</div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<nav class="tabs" id="tabs">
+  <button class="tab active" data-tab="overview">Overview</button>
+  <button class="tab" data-tab="risk">Risk Mapper</button>
+  <button class="tab" data-tab="busfactor">Bus-Factor</button>
+  <button class="tab" data-tab="complexity">Complexity</button>
+  <button class="tab" data-tab="documentation">Documentation</button>
+  <button class="tab" data-tab="pipeline">Pipeline</button>
+  <button class="tab" data-tab="onboarding">Onboarding</button>
+  <button class="tab" data-tab="extraction">Draft Extraction</button>
+</nav>
+
+<main id="view" class="view"></main>
+
+<div class="modal-backdrop" id="modal-backdrop">
+  <div class="modal" id="modal" role="dialog" aria-modal="true"></div>
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>
